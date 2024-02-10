@@ -9,8 +9,9 @@ const router = express();
 router.use(express.json());
 router.use(requestLogger);
 
-router.get('/ping', async (req, res) => {
-  return res.send('pong');
+router.get('/health', async (req, res) => {
+  //throw Error('custom error');
+  return res.send({ message: 'ok' });
 });
 
 router.use(unknownEndpoint);
