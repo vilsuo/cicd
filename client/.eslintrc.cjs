@@ -10,13 +10,30 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', '@stylistic/js'],
   rules: {
     'react/jsx-no-target-blank': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
-    'semi': ['error', 'always'],
+    '@stylistic/js/object-curly-spacing': ['error', 'always'],
+    '@stylistic/js/quote-props': [
+      'error', 'as-needed',
+    ],
+    '@stylistic/js/eol-last': ['error', 'always'],
+    '@stylistic/js/arrow-spacing': ['error', { before: true, after: true }],
+    '@stylistic/js/indent': [
+      'error',
+      2
+    ],
+    '@stylistic/js/quotes': [
+      'error',
+      'single'
+    ],
+    '@stylistic/js/semi': [
+      'error',
+      'always'
+    ],
   },
-}
+};
