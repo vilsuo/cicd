@@ -33,9 +33,11 @@ Note.init({
   },
 }, {
   hooks: {
-    beforeValidate: async (note, options) => {
-      // eslint-disable-next-line no-param-reassign
-      note.content = note.content.trim();
+    beforeValidate: (note, options) => {
+      if (typeof note.content === 'string') {
+        // eslint-disable-next-line no-param-reassign
+        note.content = note.content.trim();
+      }
     },
   },
   sequelize,

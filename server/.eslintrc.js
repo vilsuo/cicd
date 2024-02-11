@@ -37,7 +37,8 @@ module.exports = {
     '@stylistic/js/arrow-spacing': ['error', { before: true, after: true }],
     '@stylistic/js/indent': [
       'error',
-      2
+      2,
+      { SwitchCase: 1 }
     ],
     '@stylistic/js/quotes': [
       'error',
