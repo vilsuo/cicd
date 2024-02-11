@@ -1,0 +1,97 @@
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* COMPONENTS */
+.navbar {
+  border: 1px solid black;
+  display: flex;
+  gap: 8px;
+  padding: 8px
+}
+.navbar a {
+  text-decoration: none;
+}
+.navbar a.active {
+  color: red;
+}
+
+.notification {
+  background-color: gray;
+  border: 1px solid black;
+  padding: 8px;
+}
+.notification .action {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+}
+
+/* ELEMENTS */
+table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+table .center {
+  text-align: center;
+}
+table thead {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+table thead td {
+  text-align: center;
+}
+table tbody >:last-child {
+  border-bottom: 1px solid black;
+}
+table tbody tr:nth-child(odd) {
+  background-color: bisque;
+}
+table tbody tr:hover {
+  background-color: red;  
+}
+table td, table th {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 2px 4px;
+}
+
+/* NOTES PAGE */
+.notes-table .note .content {
+  max-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notes-table .note .date {
+  white-space: nowrap;
+}
+
+.note-form {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 8px;
+
+  max-width: 400px;
+}
+.note-form form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: end;
+}
+.note-form form textarea {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* NOTE PAGE */
