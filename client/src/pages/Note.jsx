@@ -6,12 +6,25 @@ export const noteLoader = async ({ params }) => {
   return await notesService.getNote(id);
 };
 
+
 const Note = () => {
   const note = useLoaderData();
 
+  const { content, views, createdAt } = note;
+
   return (
     <div className='note-page'>
-      {note.content}
+      <nav>
+        <a href='/notes'>Back</a>
+      </nav>
+
+      <div className='note'>
+        <p>{content}</p>
+        <div className='details'>
+          <span className='detail'>{createdAt}</span>
+          <span className='detail'>Views: <span>{views}</span></span>
+        </div>
+      </div>
     </div>
   );
 };
