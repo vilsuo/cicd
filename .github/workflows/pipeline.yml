@@ -1,0 +1,22 @@
+name: Testing Deployment pipeline
+
+on:
+  push:
+    branches:
+      - testing
+
+jobs:
+  client-unit-test:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
+      
