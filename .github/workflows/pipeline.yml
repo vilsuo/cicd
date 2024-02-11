@@ -1,12 +1,15 @@
-name: Testing Deployment pipeline
+name: Testing pipeline
 
 on:
   push:
     branches:
-      - testing
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
 
 jobs:
-  client-unit-test:
+  client-test:
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -19,4 +22,17 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run test
-      
+
+  server-test:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
