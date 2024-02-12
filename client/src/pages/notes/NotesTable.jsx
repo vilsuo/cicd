@@ -22,7 +22,7 @@ const NotesTable = ({ notes }) => {
           <tr key={note.id} className='note' onClick={() => handleClick(note)}>
             <td className='content'>{note.content}</td>
             <td className='center'>{note.views}</td>
-            <td className='date center'>{note.createdAt}</td>
+            <td className='date center'>{(new Date(note.createdAt)).toLocaleString()}</td>
           </tr>  
         )}
       </tbody>
