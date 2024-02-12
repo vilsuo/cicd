@@ -2,7 +2,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import notesService from '../services/notes';
 import { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import Notification from '../Notification';
+import { ErrorNotification } from '../Notification';
 
 export const notesLoader = async () => {
   return await notesService.getNotes();
@@ -21,7 +21,7 @@ const NotesTable = ({ notes }) => {
         <tr>
           <th>Content</th>
           <th>Views</th>
-          <th>Date</th>
+          <th className='date'>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -61,17 +61,23 @@ const NoteForm = ({ addNote }) => {
   return (
     <div className='note-form'>
       <form method='post' onSubmit={postNote}>
-        <TextareaAutosize
-          value={content}
-          onChange={({ target }) => setContent(target.value)}
-        />
-        <button disabled={loading} type='submit'>
-          Post
-        </button>
+        <label>
+          <span>Content</span>
+          <TextareaAutosize
+            value={content}
+            onChange={({ target }) => setContent(target.value)}
+            name='content'
+            required
+          />
+        </label>
+        <div>
+          <span>{content.trim().length}/1000</span>
+          <button disabled={loading} type='submit'>Post</button>
+        </div>
       </form>
 
       { message && (
-        <Notification message={message} close={clearMessage} />
+        <ErrorNotification message={message} close={clearMessage} />
       )}
     </div>
   );
@@ -87,7 +93,10 @@ const Notes = () => {
 
   return (
     <div className='notes-page'>
+      <h2>Notes</h2>
       <NotesTable notes={notes} />
+
+      <h3>Create a Note</h3>
       <NoteForm addNote={appendNote} />
     </div>
   );

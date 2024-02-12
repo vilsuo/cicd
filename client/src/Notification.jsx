@@ -1,8 +1,9 @@
 
-const Notification = ({ message, close }) => {
+export const Notification = ({ type, title, message, close }) => {
   return (
-    <div className='notification'>
-      <p>{message}</p>
+    <div className={`notification ${type}`}>
+      <p>{title}</p>
+      <p className='message'>{message}</p>
       <div className='action'>
         <button type='button' onClick={close}>Ok</button>
       </div>
@@ -10,4 +11,8 @@ const Notification = ({ message, close }) => {
   );
 };
 
-export default Notification;
+export const ErrorNotification = ({ message, close }) => {
+  return (
+    <Notification type='error' title='Error' message={message} close={close} />
+  );
+};
