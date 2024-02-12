@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import PropTypes from 'prop-types';
 
 import { ErrorNotification } from '../../Notification';
 import notesService from '../../services/notes';
 
-export const NoteForm = ({ addNote }) => {
+const NoteForm = ({ addNote }) => {
   const [content, setContent] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,10 @@ export const NoteForm = ({ addNote }) => {
       )}
     </div>
   );
+};
+
+NoteForm.propTypes = {
+  addNote: PropTypes.func.isRequired,
 };
 
 export default NoteForm;

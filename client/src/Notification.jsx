@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 export const Notification = ({ type, title, message, close }) => {
   return (
@@ -11,8 +12,20 @@ export const Notification = ({ type, title, message, close }) => {
   );
 };
 
+Notification.propTypes = {
+  type: PropTypes.string,
+  title: PropTypes.string,
+  message: PropTypes.string.isRequired,
+  close: PropTypes.func.isRequired,
+};
+
 export const ErrorNotification = ({ message, close }) => {
   return (
     <Notification type='error' title='Error' message={message} close={close} />
   );
+};
+
+ErrorNotification.propTypes = {
+  message: PropTypes.string.isRequired,
+  close: PropTypes.func.isRequired,
 };

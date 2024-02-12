@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const NotesTable = ({ notes }) => {
   const navigate = useNavigate();
@@ -27,6 +28,17 @@ const NotesTable = ({ notes }) => {
       </tbody>
     </table>
   );
+};
+
+NotesTable.propTypes = {
+  notes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      content: PropTypes.string,
+      views: PropTypes.number,
+      createdAt: PropTypes.string,
+    })
+  )
 };
 
 export default NotesTable;
