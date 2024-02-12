@@ -11,8 +11,8 @@ import RootLayout from './layouts/RootLayout';
 // pages
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
-import Notes, { notesLoader } from './pages/Notes';
-import Note, { noteLoader } from './pages/Note';
+import Notes, { notesLoader } from './pages/notes/Notes';
+import Note, { noteLoader } from './pages/notes/Note';
 import About from './pages/About';
 
 const router = createBrowserRouter(

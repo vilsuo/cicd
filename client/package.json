@@ -39,6 +39,7 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
+    "clearMocks": true,
     "setupFilesAfterEnv": [
       "<rootDir>/jest-setup.js"
     ]

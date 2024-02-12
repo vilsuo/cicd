@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from 'react-router-dom';
-import notesService from '../services/notes';
+import notesService from '../../services/notes';
 
 export const noteLoader = async ({ params }) => {
   const { id } = params;
@@ -17,11 +17,11 @@ const Note = () => {
         <Link to='/notes'>Back</Link>
       </nav>
 
-      <div className='note'>
+      <div className='note' data-testid='note'>
         <p>{content}</p>
         <div className='details'>
           <span className='detail'>{createdAt}</span>
-          <span className='detail'>Views: <span>{views}</span></span>
+          <span className='detail'><span>{views}</span> Views</span>
         </div>
       </div>
     </div>
