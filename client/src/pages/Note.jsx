@@ -1,11 +1,10 @@
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import notesService from '../services/notes';
 
 export const noteLoader = async ({ params }) => {
   const { id } = params;
   return await notesService.getNote(id);
 };
-
 
 const Note = () => {
   const note = useLoaderData();
@@ -15,7 +14,7 @@ const Note = () => {
   return (
     <div className='note-page'>
       <nav>
-        <a href='/notes'>Back</a>
+        <Link to='/notes'>Back</Link>
       </nav>
 
       <div className='note'>
