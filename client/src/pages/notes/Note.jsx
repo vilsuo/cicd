@@ -1,7 +1,7 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import notesService from '../../services/notes';
 
-export const noteLoader = async ({ params }) => {
+const loader = async ({ params }) => {
   const { id } = params;
   return await notesService.getNote(id);
 };
@@ -27,5 +27,7 @@ const Note = () => {
     </div>
   );
 };
+
+Note.loader = loader;
 
 export default Note;

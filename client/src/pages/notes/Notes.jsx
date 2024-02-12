@@ -5,7 +5,7 @@ import NotesTable from './NotesTable';
 import NoteForm from './NoteForm';
 import notesService from '../../services/notes';
 
-export const notesLoader = async () => {
+const loader = async () => {
   return await notesService.getNotes();
 };
 
@@ -27,5 +27,7 @@ const Notes = () => {
     </div>
   );
 };
+
+Notes.loader = loader;
 
 export default Notes;
