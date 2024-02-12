@@ -3,15 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import Note from './Note';
-import Notes from './Notes';
+import { NOTES } from '../constants';
+import Notes from '../../src/pages/notes/Notes';
+import Note from '../../src/pages/notes/Note';
 
-const note = {
-  id: 1,
-  content: 'The first note!',
-  views: 1,
-  createdAt: '2024-02-11T23:14:44.770Z',
-};
+const note = NOTES[0];
 
 const notesRoute = {
   path: '/notes',
@@ -37,8 +33,24 @@ describe('<Note />', () => {
       render(<RouterProvider router={router} />);
     });
 
-    const element = screen.getByText(note.content);
-    expect(element).toBeDefined();
+    expect(screen.getByTestId('note')).toBeInTheDocument();
+  });
+
+  test('renders note details', async () => {
+    const routes = [noteRoute];
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: [noteRoute.path],
+    });
+
+    await act(async () => {
+      render(<RouterProvider router={router} />);
+    });
+
+    expect(screen.getByText(note.content)).toBeDefined();
+
+    expect(screen.getByTestId('note')).toHaveTextContent(note.views);
+    expect(screen.getByTestId('note')).toHaveTextContent(note.createdAt);
   });
 
   test('can navigate to the Notes page', async () => {
@@ -49,12 +61,13 @@ describe('<Note />', () => {
       initialIndex: 1,
     });
 
+    const user = userEvent.setup();
+
     await act(async () => {
       render(<RouterProvider router={router} />);
     });
 
-    // navigate to the notes page
-    const user = userEvent.setup();
+    // navigate to the Notes page
     const notesLink = screen.getByRole('link', { name: /Back/i });
     await user.click(notesLink);
 
