@@ -33,6 +33,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Create .env with Github Secrets
+        run: |
+          touch .env
+          echo POSTGRES_URL_TEST=${{ secrets.POSTGRES_URL_TEST }} >> .env
       - run: npm install
       - run: npm run lint
       - run: npm run test
