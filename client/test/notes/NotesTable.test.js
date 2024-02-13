@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
 import { NOTES } from '../constants';
+import util from '../../src/util';
 import NotesTable from '../../src/pages/notes/NotesTable';
 
 const mockedUseNavigate = jest.fn();
@@ -25,7 +26,7 @@ const expectRowToHaveNote = (row, note) => {
   expect(within(row).getByRole('cell', { name: note.views }))
     .toBeInTheDocument();
 
-  expect(within(row).getByRole('cell', { name: note.createdAt }))
+  expect(within(row).getByRole('cell', { name: util.formatDate(note.createdAt) }))
     .toBeInTheDocument();
 };
 
@@ -52,7 +53,7 @@ describe('<NotesTable />', () => {
     expect(getRows()).toHaveLength(NOTES.length);
   });
 
-  test('table displayes a note', async () => {
+  test('table displays a note', async () => {
     render(
       <MemoryRouter>
         <NotesTable notes={[note]} />

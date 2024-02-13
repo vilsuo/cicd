@@ -5,6 +5,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import { NOTES } from '../constants';
+import util from '../../src/util';
 import Note from '../../src/pages/notes/Note';
 import Notes from '../../src/pages/notes/Notes';
 
@@ -40,7 +41,7 @@ const expectTableRowToHaveNote = (row, note) => {
   expect(within(row).getByRole('cell', { name: note.views }))
     .toBeInTheDocument();
 
-  expect(within(row).getByRole('cell', { name: note.createdAt }))
+  expect(within(row).getByRole('cell', { name: util.formatDate(note.createdAt) }))
     .toBeInTheDocument();
 };
 

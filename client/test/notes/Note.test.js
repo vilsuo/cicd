@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 import { NOTES } from '../constants';
+import util from '../../src/util';
 import Notes from '../../src/pages/notes/Notes';
 import Note from '../../src/pages/notes/Note';
 
@@ -50,7 +51,7 @@ describe('<Note />', () => {
     expect(screen.getByText(note.content)).toBeDefined();
 
     expect(screen.getByTestId('note')).toHaveTextContent(note.views);
-    expect(screen.getByTestId('note')).toHaveTextContent(note.createdAt);
+    expect(screen.getByTestId('note')).toHaveTextContent(util.formatDate(note.createdAt));
   });
 
   test('can navigate to the Notes page', async () => {

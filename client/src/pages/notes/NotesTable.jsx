@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import util from '../../util';
+
 const NotesTable = ({ notes }) => {
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ const NotesTable = ({ notes }) => {
           <tr key={note.id} className='note' onClick={() => handleClick(note)}>
             <td className='content'>{note.content}</td>
             <td className='center'>{note.views}</td>
-            <td className='date center'>{(new Date(note.createdAt)).toLocaleString()}</td>
+            <td className='date center'>{util.formatDate(note.createdAt)}</td>
           </tr>  
         )}
       </tbody>

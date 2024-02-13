@@ -1,6 +1,8 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import notesService from '../../services/notes';
 
+import util from '../../util';
+
 const loader = async ({ params }) => {
   const { id } = params;
   return await notesService.getNote(id);
@@ -20,7 +22,7 @@ const Note = () => {
       <div className='note' data-testid='note'>
         <p>{content}</p>
         <div className='details'>
-          <span className='detail'>{createdAt}</span>
+          <span className='detail'>{util.formatDate(createdAt)}</span>
           <span className='detail'><span>{views}</span> Views</span>
         </div>
       </div>
