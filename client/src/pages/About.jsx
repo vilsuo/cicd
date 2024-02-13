@@ -22,12 +22,12 @@ const About = () => {
   };
 
   return (
-    <div className="about-page">
+    <div className='about-page'>
       <h2>About</h2>
 
       <button onClick={handleClick}>Check status</button>
 
-      <div className="status">
+      <div className='status'>
         { status
           ? <p>{status.time.toString()}: {status.message}</p>
           : <p>Unknown status</p>

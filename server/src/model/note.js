@@ -33,7 +33,7 @@ Note.init({
   },
 }, {
   hooks: {
-    beforeValidate: (note, options) => {
+    beforeValidate: (note) => {
       if (typeof note.content === 'string') {
         // eslint-disable-next-line no-param-reassign
         note.content = note.content.trim();
