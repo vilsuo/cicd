@@ -1,13 +1,13 @@
-import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 const NavBar = () => {
 
   return (
-    <React.Fragment>
+    <div className='navbar'>
       <NavLink to="/">Home</NavLink>
+      <NavLink to="/notes">Notes</NavLink>
       <NavLink to="/about">About</NavLink>
-    </React.Fragment>
+    </div>
   );
 };
 

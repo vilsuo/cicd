@@ -1,0 +1,155 @@
+:root {
+  --active: lightblue;
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* COMPONENTS */
+.navbar {
+  border: 1px solid black;
+  display: flex;
+  gap: 8px;
+  padding: 8px
+}
+.navbar a.active {
+  color: var(--active);
+}
+
+.notification {
+  border: 1px solid black;
+  padding: 4px;
+}
+.notification.error {
+  background-color: red;
+}
+.notification.success {
+  background-color: green;
+}
+.notification .message {
+  font-style: italic;
+}
+.notification .action {
+  display: flex;
+  justify-content: end;
+  gap: 4px;
+}
+
+/* ELEMENTS */
+table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+table .center {
+  text-align: center;
+}
+table thead {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+table thead td {
+  text-align: center;
+}
+table tbody >:last-child {
+  border-bottom: 1px solid black;
+}
+table tbody tr:nth-child(odd) {
+  background-color: bisque;
+}
+table tbody tr:hover {
+  background-color: var(--active);  
+}
+table td, table th {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 2px 4px;
+}
+
+/* NOTES PAGE */
+.notes-table .note .content {
+  max-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notes-table .note .date {
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .notes-table .date {
+    display: none;
+  }
+}
+
+.note-form {
+  max-width: 400px;
+}
+.note-form form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: end;
+  padding: 4px;
+  margin-bottom: 4px;
+  border: 1px solid black;
+}
+.note-form form label {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.note-form form label span:after {
+  content: ':';
+}
+.note-form form label textarea {
+  flex: 1;
+}
+.note-form form label textarea:focus {
+  outline: none !important;
+  border: 1px solid black;
+  box-shadow: 0 0 10px var(--active);
+}
+.note-form form button[type=submit] {
+  margin-left: 4px;
+}
+
+/* NOTE PAGE */
+.note-page {
+  display: flex;
+  margin-top: 20px;
+}
+
+.note-page nav {
+  padding: 8px;
+  border-right: 1px solid black;
+  margin-right: 8px;
+}
+
+.note-page .note {
+  flex: 1;
+}
+.note-page .note > p {
+  background-color: bisque;
+  padding: 4px;
+  margin: 0 0 8px 0;
+}
+.note-page .note .details {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 2px;
+}
+.note-page .note .details .detail {
+  background-color: lightgray;
+  padding: 2px;
+}
