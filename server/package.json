@@ -29,6 +29,9 @@
     "supertest": "^6.3.4"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./test/suiteSetup.js"]
+    "clearMocks": true,
+    "setupFilesAfterEnv": [
+      "./test/suiteSetup.js"
+    ]
   }
 }
