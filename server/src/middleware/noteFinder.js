@@ -2,7 +2,7 @@ const { Note } = require('../model');
 const parser = require('../util/parser');
 
 const noteFinder = async (req, res, next) => {
-  const id = parser.parseId(Number(req.params.id));
+  const id = parser.parseId(req.params.id);
   const note = await Note.findByPk(id);
 
   if (!note) {
