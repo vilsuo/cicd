@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 const logger = require('../util/logger');
+const ParseError = require('../util/error');
 
 const createMessageFromErrorArray = (errors) => {
   return errors.map((err) => err.message).join('. ');
@@ -14,6 +15,12 @@ const errorHandler = (error, req, res, next) => {
     case error instanceof Sequelize.ValidationError: {
       return res.status(400).send({
         message: createMessageFromErrorArray(error.errors),
+      });
+    }
+    
+    case error instanceof ParseError: {
+      return res.status(400).send({
+        message: error.message,
       });
     }
 
