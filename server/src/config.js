@@ -6,7 +6,7 @@ const POSTGRES_URL_TEST = 'postgres://postgres:secret@localhost:5434/cicd_test';
 const POSTGRES_URL_DEV = 'postgres://postgres:secret@localhost:5433/cicd_dev';
 
 const POSTGRES_URLS = {
-  test: POSTGRES_URL_TEST,
+  test: process.env.POSTGRES_URL_TEST || POSTGRES_URL_TEST,
   development: POSTGRES_URL_DEV,
   production: process.env.POSTGRES_URL,
 };
