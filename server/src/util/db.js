@@ -10,7 +10,7 @@ const sequelize = new Sequelize(POSTGRES_URL, {
 const connectToDatabases = async () => {
   try {
     await sequelize.authenticate();
-    logger.info('Connected to the Postgre database');
+    logger.info('Connected to the Postgres database');
 
   } catch (err) {
     logger.error('Error', err);
