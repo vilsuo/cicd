@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "dev-pg:up": "docker compose -f docker-compose.dev.yml up",
+    "dev-pg:down": "docker compose -f docker-compose.dev.yml down",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test-pg:up": "docker compose -f docker-compose.test.yml up -d",
+    "test-pg:down": "docker compose -f docker-compose.test.yml down",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  pg_test_db:
+    image: postgres
+
+    # Note: docker-compose run ignores ports unless you include --service-ports
+    ports:
+      - target: 5432 # the port inside the container
+        published: 5434 # the publicly exposed port
+
+    environment:
+      # This environment variable is required, it must not be empty or undefined.
+      # Sets superuser password for PostgreSQL. The default superuser is defined
+      # by the POSTGRES_USER.
+      #
+      # This variable defines the superuser password in the PostgreSQL instance,
+      # as set by the initdb script during initial container startup. It has no
+      # effect on the PGPASSWORD environment variable that may be used by the psql
+      # client at runtime.
+      POSTGRES_PASSWORD: secret
+
+      # This optional environment variable is used in conjunction with POSTGRES_PASSWORD
+      # to set a user and its password.
+      #
+      # This variable will create the specified user with superuser power and a
+      # database with the same name
+      POSTGRES_USER: postgres
+
+      # This optional environment variable can be used to define a different name for
+      # the default database that is created when the image is first started. If it is
+      # not specified, then the value of POSTGRES_USER will be used.
+      POSTGRES_DB: cicd_test
