@@ -9,7 +9,9 @@
     "server:start:test": "cd server && npm run start:test",
     "client:start": "cd client && npm run dev",
     "test:e2e": "cypress run",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "client:deploy": "cd client && npm run deploy",
+    "start": "cd server && npm run start"
   },
   "keywords": [],
   "author": "",
