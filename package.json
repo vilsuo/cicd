@@ -4,6 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server:install": "cd server && npm install",
+    "client:install": "cd client && npm install",
+    "server:start": "cd server && npm run start:test",
+    "client:start": "cd client && npm run dev",
+    "test:e2e": "cypress run",
     "cypress:open": "cypress open"
   },
   "keywords": [],

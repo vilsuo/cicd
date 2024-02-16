@@ -1,0 +1,50 @@
+name: Testing pipeline
+
+on:
+  push:
+    branches:
+      - e2e
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-20.04
+
+    # Service containers to run with `server-container-test`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+
+      - run: npm run client:install
+      - run: npm run client:start
+
+      - run: npm run server:install
+      - run: npm run server:start
+        env:
+          POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
+
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:e2e
+          wait-on: http://localhost:5173
