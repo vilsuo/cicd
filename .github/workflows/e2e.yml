@@ -52,6 +52,6 @@ jobs:
         with:
           start: npm run client:start, npm run server:start
           command: npm run test:e2e
-          env:
-            POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
+        env:
+          POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
 
