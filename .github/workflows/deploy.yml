@@ -1,0 +1,15 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  render_deploy:
+    steps:
+      - name: Trigger deployment
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$DEPLOY_URL"
