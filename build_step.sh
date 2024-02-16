@@ -2,7 +2,7 @@
 
 echo "Build script"
 
-npm run server:install
-npm run client:install
+npm run server:install -- --omit=dev
+npm run client:install -- --omit=dev
 
 npm run client:deploy
