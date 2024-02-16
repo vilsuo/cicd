@@ -1,0 +1,20 @@
+{
+  "name": "cide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server:install": "cd server && npm install",
+    "client:install": "cd client && npm install",
+    "server:start:test": "cd server && npm run start:test",
+    "client:start": "cd client && npm run dev",
+    "test:e2e": "cypress run",
+    "cypress:open": "cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.4"
+  }
+}

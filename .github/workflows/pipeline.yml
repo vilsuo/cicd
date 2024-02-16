@@ -59,3 +59,47 @@ jobs:
       - run: npm run test
         env:
           POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
+
+  e2e-tests:
+    runs-on: ubuntu-20.04
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Parent modules
+        run: npm install
+
+      - name: Install Frontend modules
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: npm run client:install
+          runTests: false
+
+      - name: Install Backend modules
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: npm run server:install
+          runTests: false
+
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run client:start, npm run server:start:test
+          command: npm run test:e2e
+        env:
+          POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
