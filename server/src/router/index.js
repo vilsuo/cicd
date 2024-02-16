@@ -7,6 +7,7 @@ const errorHandler = require('../middleware/errorHandler');
 
 // routers
 const notesRouter = require('./notes');
+const testingRouter = require('./testing');
 
 const router = express();
 
@@ -18,6 +19,10 @@ router.get('/health', async (req, res) => {
 });
 
 router.use('/notes', notesRouter);
+
+if (process.env.NODE_ENV === 'test') {
+  router.use('/testing', testingRouter);
+}
 
 router.use(unknownEndpoint);
 router.use(errorHandler);

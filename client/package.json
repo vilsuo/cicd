@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "deploy": "rm -rf ../server/dist && npm run build && cp -r ./dist ../server",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
