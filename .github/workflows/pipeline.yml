@@ -1,4 +1,4 @@
-name: Testing pipeline
+name: Deployment pipeline
 
 on:
   push:
@@ -103,3 +103,14 @@ jobs:
           command: npm run test:e2e
         env:
           POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
+
+  render_deploy:
+    needs: ['client-test', 'server-test', 'e2e-tests']
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger deployment
+        if: ${{ github.event_name == 'push' }}
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$DEPLOY_URL"
