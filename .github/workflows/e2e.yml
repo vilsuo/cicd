@@ -35,16 +35,23 @@ jobs:
           node-version: '20'
       - run: npm install
 
-      - run: npm run client:install
-      - run: npm run client:start
-
-      - run: npm run server:install
-      - run: npm run server:start
-        env:
-          POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
-
-      - name: e2e tests
+      - name: Install Frontend modules
         uses: cypress-io/github-action@v5
         with:
+          install-command: npm run client:install
+          runTests: false
+
+      - name: Install Backend modules
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: npm run server:install
+            runTests: false
+
+      - name: Run API tests 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run client:start, npm run server:start
+            env:
+              POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
           command: npm run test:e2e
-          wait-on: http://localhost:5173
+
