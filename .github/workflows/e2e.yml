@@ -51,7 +51,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           start: npm run client:start, npm run server:start
-            env:
-              POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
           command: npm run test:e2e
+          env:
+            POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'
 
