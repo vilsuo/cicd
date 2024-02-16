@@ -45,7 +45,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           install-command: npm run server:install
-            runTests: false
+          runTests: false
 
       - name: Run API tests 🧪
         uses: cypress-io/github-action@v5
