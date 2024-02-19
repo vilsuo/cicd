@@ -9,21 +9,20 @@ const up = async ({ context: queryInterface }) => {
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
     },
-  });
-
-  await queryInterface.addColumn('comments', 'note_id', {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'notes',
-      key: 'id',
-      onDelete: 'CASCADE'
+    note_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'notes',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
     },
   });
 };
