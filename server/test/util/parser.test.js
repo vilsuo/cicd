@@ -1,5 +1,5 @@
 const ParseError = require('../../src/util/error');
-const { parseId, parseContent } = require('../../src/util/parser');
+const { parseId, parseText } = require('../../src/util/parser');
 
 const expectToThrow = (fn, value, error) => {
   expect(() => fn(value)).toThrow(error);
@@ -56,26 +56,26 @@ describe('parseId', () => {
   });
 });
 
-describe('parseContent', () => {
-  const expectParseContentToThrow = (value) => expectToThrow(parseContent, value, ParseError);
+describe('parseText', () => {
+  const expectParseTextToThrow = (value) => expectToThrow(parseText, value, ParseError);
 
-  test('parsing without a value throws', () => { expectParseContentToThrow(); });
+  test('parsing without a value throws', () => { expectParseTextToThrow(); });
 
   test('calling with with a type other than string', () => {
-    expectParseContentToThrow(7);
-    expectParseContentToThrow(false);
-    expectParseContentToThrow(true);
-    expectParseContentToThrow(['1']);
-    expectParseContentToThrow({ 1: '1' });
+    expectParseTextToThrow(7);
+    expectParseTextToThrow(false);
+    expectParseTextToThrow(true);
+    expectParseTextToThrow(['1']);
+    expectParseTextToThrow({ 1: '1' });
   });
 
   test('empty string value returns empty string', () => {
-    expect(parseContent('')).toBe('');
+    expect(parseText('')).toBe('');
   });
 
   test('string value returns the string', () => {
     const content = 'Test content';
-    expect(parseContent(content)).toBe(content);
+    expect(parseText(content)).toBe(content);
   });
 });
 
