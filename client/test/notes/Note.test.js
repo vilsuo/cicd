@@ -3,58 +3,31 @@ import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
-import { NOTES } from '../constants';
+import { NOTES, NOTES_WITH_COMMENTS } from '../constants';
 import util from '../../src/util';
 import Notes from '../../src/pages/notes/Notes';
 import Note from '../../src/pages/notes/Note';
 
-const note = NOTES[0];
+const noteNoComments = NOTES[0];
+
+const noteWithComments = NOTES_WITH_COMMENTS.SINGLE;
 
 const notesRoute = {
   path: '/notes',
   element: <Notes />,
-  loader: () => [note],
+  loader: () => [noteNoComments],
 };
 
 const noteRoute = {
-  path: `/notes/${note.id}`,
+  path: `/notes/${noteWithComments.id}`,
   element: <Note />,
-  loader: () => note,
+  loader: () => noteWithComments,
 };
 
 describe('<Note />', () => {
-  test('renders Note element', async () => {
-    const routes = [noteRoute];
+  let user;
 
-    const router = createMemoryRouter(routes, {
-      initialEntries: [noteRoute.path],
-    });
-
-    await act(async () => {
-      render(<RouterProvider router={router} />);
-    });
-
-    expect(screen.getByTestId('note')).toBeInTheDocument();
-  });
-
-  test('renders note details', async () => {
-    const routes = [noteRoute];
-
-    const router = createMemoryRouter(routes, {
-      initialEntries: [noteRoute.path],
-    });
-
-    await act(async () => {
-      render(<RouterProvider router={router} />);
-    });
-
-    expect(screen.getByText(note.content)).toBeDefined();
-
-    expect(screen.getByTestId('note')).toHaveTextContent(note.views);
-    expect(screen.getByTestId('note')).toHaveTextContent(util.formatDate(note.createdAt));
-  });
-
-  test('can navigate to the Notes page', async () => {
+  beforeEach(async () => {
     const routes = [notesRoute, noteRoute];
 
     const router = createMemoryRouter(routes, {
@@ -62,13 +35,27 @@ describe('<Note />', () => {
       initialIndex: 1,
     });
 
-    const user = userEvent.setup();
+    user = userEvent.setup();
 
     await act(async () => {
       render(<RouterProvider router={router} />);
     });
+  });
 
-    // navigate to the Notes page
+  test('renders note details', async () => {
+    const { content, views, createdAt } = noteWithComments;
+
+    expect(screen.getByTestId('note')).toHaveTextContent(content);
+    expect(screen.getByTestId('note')).toHaveTextContent(views);
+    expect(screen.getByTestId('note')).toHaveTextContent(util.formatDate(createdAt));
+  });
+
+  test('renders note comments', async () => {
+    const commentContent = noteWithComments.comments[0].content;
+    expect(screen.getByTestId('comment')).toHaveTextContent(commentContent);
+  });
+
+  test('can navigate to the Notes page', async () => {
     const notesLink = screen.getByRole('link', { name: /Back/i });
     await user.click(notesLink);
 
