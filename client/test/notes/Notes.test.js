@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import { NOTES } from '../constants';
+import { NOTES, NOTES_WITH_COMMENTS } from '../constants';
 import util from '../../src/util';
 import Note from '../../src/pages/notes/Note';
 import Notes from '../../src/pages/notes/Notes';
@@ -12,10 +12,10 @@ import Notes from '../../src/pages/notes/Notes';
 jest.mock('axios');
 const mockedAxios = axios;
 
-const createNoteRoute = (note) => ({
-  path: `/notes/${note.id}`,
+const createNoteRoute = (noteWithComments) => ({
+  path: `/notes/${noteWithComments.id}`,
   element: <Note />,
-  loader: () => note,
+  loader: () => noteWithComments,
 });
 
 const createNotesRoute = (notes = []) => ({
@@ -113,7 +113,7 @@ describe('<Notes />', () => {
   });
 
   test('can navigate to Note page from a table note', async () => {
-    const routes = [createNotesRoute([note]), createNoteRoute(note)];
+    const routes = [createNotesRoute([note]), createNoteRoute(NOTES_WITH_COMMENTS.SINGLE)];
 
     const router = createMemoryRouter(routes, {
       initialEntries: [routes[0].path],
