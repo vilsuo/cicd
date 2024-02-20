@@ -30,17 +30,6 @@ singleRouter.get('/', async (req, res) => {
 
 const commentsRouter = express.Router();
 
-// needed? comments are already included in the single GET note route
-commentsRouter.get('/', async (req, res) => {
-  const { note } = req;
-
-  const comments = await Comment.findAll({
-    where: { noteId: note. id }
-  });
-
-  return res.send(comments);
-});
-
 commentsRouter.post('/', async (req, res) => {
   const { note } = req;
   const content = parser.parseText(req.body.content);
