@@ -33,7 +33,7 @@ const expectRowToHaveNote = (row, note) => {
 describe('<NotesTable />', () => {
   const note = NOTES[0];
 
-  test('table does not have any row when there are no notes', async () => {
+  test('table does not have any rows when there are no notes', async () => {
     render(
       <MemoryRouter>
         <NotesTable notes={[]} />
