@@ -3,13 +3,13 @@ import util from '../../util';
 import { useState } from 'react';
 
 const Comment = ({ comment }) => {
-
   const { content, createdAt } = comment;
+
   return (
-    <div className='comment'>
+    <li className='comment' data-testid='comment'>
       <p className='content'>{content}</p>
       <p className='detail'>{util.formatDate(createdAt)}</p>
-    </div>
+    </li>
   );
 };
 
@@ -47,20 +47,23 @@ const NoteComments = ({ comments }) => {
     );
   }
 
+  // show comments sort options if there are more than a single comment
   return (
     <div>
-      <div className='comments-sort-box'>
-        <p>Order by:</p>
-        <button onClick={toggleDirection}>
-          {direction === DIRECTION.ASC ? 'Oldest' : 'Latest'}
-        </button>
-      </div>
+      { (comments.length > 1) && (
+        <div className='comments-sort-box'>
+          <p>Order by:</p>
+          <button onClick={toggleDirection}>
+            {direction === DIRECTION.ASC ? 'Oldest' : 'Latest'}
+          </button>
+        </div>
+      )}
 
-      <div className='comments'>
-        { comments.sort(sortComments).map(comment =>
+      <ul className='comments' data-testid='comments'>
+        { comments.toSorted(sortComments).map(comment =>
           <Comment key={comment.id} comment={comment} />
         )}
-      </div>
+      </ul>
     </div>
   );
 };
