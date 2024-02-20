@@ -21,7 +21,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  ignorePatterns: ['dist'],
+  ignorePatterns: ['dist', 'pg_database'],
   plugins: [
     '@stylistic/js'
   ],

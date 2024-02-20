@@ -11,6 +11,7 @@ class MyUmzugCLI extends UmzugCLI {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 class MyUmzug extends Umzug {
   getCLI(options) {
     return new MyUmzugCLI(this, options);
