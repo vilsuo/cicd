@@ -8,6 +8,7 @@
     "dev-pg:up": "docker compose -f docker-compose.dev.yml up",
     "dev-pg:down": "docker compose -f docker-compose.dev.yml down",
     "dev-pg:psql": "docker exec -it cicd_pg_dev_db psql --username=postgres --dbname=cicd_dev",
+    "dev-pg:umzug": "cross-env NODE_ENV=development node src/util/umzug/index.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
     "start:test": "cross-env NODE_ENV=test node src/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",

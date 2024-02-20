@@ -36,4 +36,4 @@ services:
       - ./pg_database:/var/lib/postgresql/data
 
       # scripts are only run if you start the container with a data directory that is empty
-      #- ./init-pg-dev.sql:/docker-entrypoint-initdb.d/init-pg-dev.sql
+      - ./init-pg-dev.sql:/docker-entrypoint-initdb.d/init-pg-dev.sql
