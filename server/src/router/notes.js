@@ -14,7 +14,11 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const content = parser.parseText(req.body.content);
   const note = await Note.create({ content });
-  return res.status(201).send(note);
+
+  return res.status(201).send({
+    ...note.toJSON(),
+    comments: []
+  });
 });
 
 const singleRouter = express.Router();
@@ -26,6 +30,7 @@ singleRouter.get('/', async (req, res) => {
 
 const commentsRouter = express.Router();
 
+// needed? comments are already included in the single GET note route
 commentsRouter.get('/', async (req, res) => {
   const { note } = req;
 
