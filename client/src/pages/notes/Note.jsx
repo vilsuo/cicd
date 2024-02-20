@@ -2,6 +2,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import notesService from '../../services/notes';
 
 import util from '../../util';
+import NoteComments from './NoteComments';
 
 const loader = async ({ params }) => {
   const { id } = params;
@@ -11,7 +12,7 @@ const loader = async ({ params }) => {
 const Note = () => {
   const note = useLoaderData();
 
-  const { content, views, createdAt } = note;
+  const { content, views, createdAt, comments } = note;
 
   return (
     <div className='note-page'>
@@ -20,11 +21,15 @@ const Note = () => {
       </nav>
 
       <div className='note' data-testid='note'>
+        <h2>Note</h2>
         <p>{content}</p>
         <div className='details'>
           <span className='detail'>{util.formatDate(createdAt)}</span>
           <span className='detail'><span>{views}</span> Views</span>
         </div>
+
+        <h3>Comments</h3>
+        <NoteComments comments={comments} />
       </div>
     </div>
   );
