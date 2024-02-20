@@ -41,14 +41,14 @@ const NoteComments = ({ comments }) => {
 
   if (comments.length === 0) {
     return (
-      <div className='note-comments'>
+      <div>
         No comments
       </div>
     );
   }
 
   return (
-    <div className='note-comments'>
+    <div>
       <div className='comments-sort-box'>
         <p>Order by:</p>
         <button onClick={toggleDirection}>

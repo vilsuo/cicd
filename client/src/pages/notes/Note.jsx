@@ -20,12 +20,14 @@ const Note = () => {
         <Link to='/notes'>Back</Link>
       </nav>
 
-      <div className='note' data-testid='note'>
+      <div className='container'>
         <h2>Note</h2>
-        <p>{content}</p>
-        <div className='details'>
-          <span className='detail'>{util.formatDate(createdAt)}</span>
-          <span className='detail'><span>{views}</span> Views</span>
+        <div className='note' data-testid='note'>
+          <p>{content}</p>
+          <div className='details'>
+            <span className='detail'>{util.formatDate(createdAt)}</span>
+            <span className='detail'><span>{views}</span> Views</span>
+          </div>
         </div>
 
         <h3>Comments</h3>

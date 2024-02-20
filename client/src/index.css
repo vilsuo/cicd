@@ -137,7 +137,7 @@ table td, table th {
   border-right: 1px solid black;
   margin-right: 8px;
 }
-.note-page .note {
+.note-page .container {
   flex: 1;
 }
 .note-page .note > p {
