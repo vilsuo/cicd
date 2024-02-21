@@ -3,43 +3,48 @@ import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 
 import { ErrorNotification } from '../../Notification';
-import notesService from '../../services/notes';
 
-const NoteForm = ({ addNote }) => {
-  const [content, setContent] = useState('');
+const TextareaForm = ({ create, label, maxLength }) => {
+  const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const clearMessage = () => setMessage('');
 
-  const postNote = async (event) => {
+  const clear = () => {
+    setValue('');
+    clearMessage();
+  };
+
+  const postValue = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     try {
-      const note = await notesService.postNote({ content });
-      addNote(note);
-      setContent('');
-      clearMessage();
+      await create(value);
+      clear();
+
     } catch(error) {
       setMessage(error.response.data.message);
     }
+
     setLoading(false);
   };
 
   return (
-    <div className='note-form'>
-      <form method='post' onSubmit={postNote} aria-label='form'>
+    <div className='textarea-form'>
+      <form method='post' onSubmit={postValue} aria-label='form'>
         <label>
-          <span>Content</span>
+          <span>{label}</span>
           <TextareaAutosize
             placeholder='type here...'
-            value={content}
-            onChange={({ target }) => setContent(target.value)}
+            value={value}
+            onChange={({ target }) => setValue(target.value)}
             required
           />
         </label>
         <div>
-          <span>{content.trim().length}/1000</span>
+          { maxLength && <span>{value.trim().length}/{maxLength}</span> }
           <button disabled={loading} type='submit'>Post</button>
         </div>
       </form>
@@ -51,8 +56,10 @@ const NoteForm = ({ addNote }) => {
   );
 };
 
-NoteForm.propTypes = {
-  addNote: PropTypes.func.isRequired,
+TextareaForm.propTypes = {
+  create: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  maxLength: PropTypes.number,
 };
 
-export default NoteForm;
+export default TextareaForm;

@@ -2,78 +2,145 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import axios from 'axios';
 
-import { NOTES } from '../constants';
+import { COMMENTS, NOTES, NOTES_WITH_COMMENTS } from '../constants';
 import util from '../../src/util';
 import Notes from '../../src/pages/notes/Notes';
 import Note from '../../src/pages/notes/Note';
 
-const note = NOTES[0];
+jest.mock('axios');
+const mockedAxios = axios;
+
+const noteNoComments = NOTES[0];
 
 const notesRoute = {
   path: '/notes',
   element: <Notes />,
-  loader: () => [note],
+  loader: () => [noteNoComments],
 };
 
-const noteRoute = {
-  path: `/notes/${note.id}`,
+const createNoteRoute = (noteWithComments) => ({
+  path: `/notes/${noteWithComments.id}`,
   element: <Note />,
-  loader: () => note,
+  loader: () => noteWithComments,
+});
+
+const getCommentTextarea = () => {
+  return screen.getByLabelText(/Content/i);
+};
+
+const getCommentSubmitButton = () => {
+  return screen.getByRole('button', { name: /Post/i });
+};
+
+const queryNoteComments = () => {
+  return screen.queryAllByRole('listitem');
 };
 
 describe('<Note />', () => {
-  test('renders Note element', async () => {
-    const routes = [noteRoute];
+  let user;
 
-    const router = createMemoryRouter(routes, {
-      initialEntries: [noteRoute.path],
-    });
-
-    await act(async () => {
-      render(<RouterProvider router={router} />);
-    });
-
-    expect(screen.getByTestId('note')).toBeInTheDocument();
+  beforeEach(() => {
+    user = userEvent.setup();
   });
 
-  test('renders note details', async () => {
-    const routes = [noteRoute];
+  describe('when note does not have any comments', () => {
+    const note = NOTES_WITH_COMMENTS.EMPTY;
 
-    const router = createMemoryRouter(routes, {
-      initialEntries: [noteRoute.path],
+    beforeEach(async () => {
+      const noteRoute = createNoteRoute(note);
+
+      const router = createMemoryRouter(
+        [notesRoute, noteRoute],
+        {
+          initialEntries: [notesRoute.path, noteRoute.path],
+          initialIndex: 1,
+        }
+      );
+  
+      await act(async () => {
+        render(<RouterProvider router={router} />);
+      });
     });
 
-    await act(async () => {
-      render(<RouterProvider router={router} />);
+    test('renders note details', async () => {
+      const { content, views, createdAt } = note;
+  
+      expect(screen.getByTestId('note')).toHaveTextContent(content);
+      expect(screen.getByTestId('note')).toHaveTextContent(views);
+      expect(screen.getByTestId('note')).toHaveTextContent(util.formatDate(createdAt));
     });
 
-    expect(screen.getByText(note.content)).toBeDefined();
-
-    expect(screen.getByTestId('note')).toHaveTextContent(note.views);
-    expect(screen.getByTestId('note')).toHaveTextContent(util.formatDate(note.createdAt));
-  });
-
-  test('can navigate to the Notes page', async () => {
-    const routes = [notesRoute, noteRoute];
-
-    const router = createMemoryRouter(routes, {
-      initialEntries: [notesRoute.path, noteRoute.path],
-      initialIndex: 1,
+    test('comment form is visible', () => {
+      getCommentTextarea();
     });
 
-    const user = userEvent.setup();
-
-    await act(async () => {
-      render(<RouterProvider router={router} />);
+    test('there are no comments', () => {
+      screen.getByText(/No Comments/i);
+      expect(queryNoteComments()).toHaveLength(0);
     });
 
-    // navigate to the Notes page
-    const notesLink = screen.getByRole('link', { name: /Back/i });
-    await user.click(notesLink);
+    test('can navigate to the Notes page', async () => {
+      const notesLink = screen.getByRole('link', { name: /Back/i });
+      await user.click(notesLink);
+  
+      // expect to find the main heading
+      expect(screen.getByRole('heading', { name: /^Notes$/i }))
+        .toBeInTheDocument();
+    });
 
-    // expect to find the main heading
-    expect(screen.getByRole('heading', { name: /^Notes$/i }))
-      .toBeInTheDocument();
+    describe('after leaving a comment successfully', () => {
+      const comment = COMMENTS[0];
+
+      const mockedResponse = {
+        data: comment,
+        status: 201,
+      };
+
+      beforeEach(async () => {
+        mockedAxios.post.mockResolvedValueOnce(mockedResponse);
+
+        await user.type(getCommentTextarea(), comment.content);
+        await user.click(getCommentSubmitButton());
+      });
+
+      test('comment textarea is cleared', () => {
+        expect(getCommentTextarea()).toHaveTextContent('');
+      });
+
+      test('the comment is rendered', () => {
+        expect(queryNoteComments()[0]).toHaveTextContent(comment.content);
+      });
+    });
+
+    describe('after leaving a comment unsuccessfully', () => {
+      const comment = COMMENTS[0];
+
+      const message = 'Something bad happened';
+      const mockedResponse = {
+        status: 400,
+        response: { data: { message } },
+      };
+
+      beforeEach(async () => {
+        mockedAxios.post.mockRejectedValueOnce(mockedResponse);
+
+        await user.type(getCommentTextarea(), comment.content);
+        await user.click(getCommentSubmitButton());
+      });
+
+      test('comment textarea is not cleared', () => {
+        expect(getCommentTextarea()).toHaveTextContent(comment.content);
+      });
+
+      test('the comment is not rendered', () => {
+        expect(queryNoteComments()).toHaveLength(0);
+      });
+      
+      test('response error message is displayed', () => {
+        screen.getByText(message);
+      });
+    });
   });
 });

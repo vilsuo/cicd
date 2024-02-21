@@ -3,6 +3,7 @@ version: '3.8'
 services:
   pg_dev_db:
     image: postgres
+    container_name: 'cicd_pg_dev_db'
     
     ports:
       - target: 5432 # the port inside the container

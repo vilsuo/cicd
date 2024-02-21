@@ -26,11 +26,19 @@ const parseId = (value, name = 'id') => {
   throw new ParseError(`Parameter ${name} must be a non-negative integer`);
 };
 
-const parseContent = (value, name = 'content') => {
+/**
+ * Check if the value is a string.
+ * 
+ * @param {*} value 
+ * @param {*} name 
+ * @returns parameter value, if it is a string
+ * @throws ParseError if parameter is not a string
+ */
+const parseText = (value, name = 'content') => {
   return parseString(parseDefined(value, name), name);
 };
 
 module.exports = {
   parseId,
-  parseContent,
+  parseText,
 };

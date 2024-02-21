@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const app = require('../../src/app');
-const { Note } = require('../../src/model');
+const { Note, Comment } = require('../../src/model');
 
 const api = supertest(app);
 
@@ -44,8 +44,8 @@ describe('GET notes', () => {
     expect(notes.length).toBe(0);
   });
 
-  test('after a Note has been posted, the Note is included in the array', async () => {
-    const createdNote = await postNote({ content }, 201);
+  test('after a Note has been created, the Note is included in the array', async () => {
+    const createdNote = await Note.create({ content });
     const notes = await getNotes();
 
     expect(notes.length).toBe(1);
@@ -59,15 +59,26 @@ describe('Get note', () => {
     expect(responseBody.message).toMatch(/Note does not exist/i);
   });
 
-  test('can get a posted Note', async () => {
-    const createdNote = await postNote({ content }, 201);
+  test('can get a created Note', async () => {
+    const createdNote = await Note.create({ content });
     const note = await getNote(createdNote.id, 200);
 
     expect(note.content).toBe(createdNote.content);
   });
 
+  test('comments are included in the Note', async () => {
+    const createdNote = await Note.create({ content });
+    const comment = await Comment.create({
+      content: 'Comment content',
+      noteId: createdNote.id
+    });
+
+    const note = await getNote(createdNote.id, 200);
+    expect(note.comments[0].content).toBe(comment.content);
+  });
+
   test('getting a Note increments its view count', async () => {
-    const createdNote = await postNote({ content }, 201);
+    const createdNote = await Note.create({ content });
     expect(createdNote.views).toBe(0);
 
     const firstTime = await getNote(createdNote.id, 200);
@@ -79,23 +90,41 @@ describe('Get note', () => {
 });
 
 describe('POST notes', () => {
-  test('can not create a Note without content', async () => {
+  test('can not post a Note without content', async () => {
     const responseBody = await postNote({ content: '' }, 400);
 
     expect(responseBody.message).toMatch(/Content length must be/i);
   });
 
-  test('created Note is returned', async () => {
-    const note = await postNote({ content }, 201);
+  test('can not post a Note with non-string content', async () => {
+    const responseBody = await postNote({ content: [1, 2] }, 400);
 
-    expect(note.content).toBe(content);
-    expect(note.id).not.toBeFalsy();
+    expect(responseBody.message).toMatch(/string/i);
   });
 
-  test('created Note can be found', async () => {
-    const note = await postNote({ content }, 201);
+  describe('after posting a Note', () => {
+    let note;
 
-    const foundNote = await Note.findByPk(note.id);
-    expect(foundNote.content).toBe(content);
+    beforeEach(async () => {
+      note = await postNote({ content }, 201);
+    });
+
+    test('posted Note does not have any views', async () => {
+      expect(note.views).toBe(0);
+    });
+
+    test('posted Note does not have any Comments', async () => {
+      expect(note.comments).toHaveLength(0);
+    });
+  
+    test('posted Note is returned', async () => {
+      expect(note.content).toBe(content);
+      expect(note.id).not.toBeFalsy();
+    });
+  
+    test('posted Note can be found', async () => {
+      const foundNote = await Note.findByPk(note.id);
+      expect(foundNote.content).toBe(content);
+    });
   });
 });

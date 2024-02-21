@@ -1,5 +1,8 @@
 :root {
   --active: lightblue;
+
+  --primary: bisque;
+  --secondary: lightgray;
 }
 
 main {
@@ -63,7 +66,7 @@ table tbody >:last-child {
   border-bottom: 1px solid black;
 }
 table tbody tr:nth-child(odd) {
-  background-color: bisque;
+  background-color: var(--primary);
 }
 table tbody tr:hover {
   background-color: var(--active);  
@@ -91,10 +94,11 @@ table td, table th {
   }
 }
 
-.note-form {
+/* TEXTAREA FORM (notes page note posting & note page comment posting) */
+.textarea-form {
   max-width: 400px;
 }
-.note-form form {
+.textarea-form form {
   display: flex;
   flex-flow: row wrap;
   justify-content: end;
@@ -102,25 +106,25 @@ table td, table th {
   margin-bottom: 4px;
   border: 1px solid black;
 }
-.note-form form label {
+.textarea-form form label {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   gap: 4px;
   margin-bottom: 4px;
 }
-.note-form form label span:after {
+.textarea-form form label span:after {
   content: ':';
 }
-.note-form form label textarea {
+.textarea-form form label textarea {
   flex: 1;
 }
-.note-form form label textarea:focus {
+.textarea-form form label textarea:focus {
   outline: none !important;
   border: 1px solid black;
   box-shadow: 0 0 10px var(--active);
 }
-.note-form form button[type=submit] {
+.textarea-form form button[type=submit] {
   margin-left: 4px;
 }
 
@@ -129,18 +133,16 @@ table td, table th {
   display: flex;
   margin-top: 20px;
 }
-
 .note-page nav {
   padding: 8px;
   border-right: 1px solid black;
   margin-right: 8px;
 }
-
-.note-page .note {
+.note-page .container {
   flex: 1;
 }
 .note-page .note > p {
-  background-color: bisque;
+  background-color: var(--primary);
   padding: 4px;
   margin: 0 0 8px 0;
 }
@@ -150,6 +152,40 @@ table td, table th {
   gap: 2px;
 }
 .note-page .note .details .detail {
-  background-color: lightgray;
+  background-color: var(--secondary);
   padding: 2px;
+}
+/* NOTE PAGE COMMENTS */
+.note-page .comments-sort-box {
+  display: flex;
+  margin: 8px 0;
+}
+.note-page .comments-sort-box p {
+  margin: 0;
+}
+.note-page .comments-sort-box button {
+  margin-left: 4px;
+}
+.note-page .comments {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.note-page .comments .comment {
+  margin-bottom: 8px;
+}
+.note-page .comments .comment:last-child {
+  margin-bottom: 0px;
+}
+.note-page .comments .comment p {
+  margin: 0px
+}
+.note-page .comments .comment .content {
+  background-color: var(--primary);
+  padding: 4px;
+  margin-bottom: 2px;
+}
+.note-page .comments .comment .detail {
+  background-color: var(--secondary);
+  padding-left: 4px;
 }

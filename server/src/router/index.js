@@ -10,6 +10,7 @@ const errorHandler = require('../middleware/errorHandler');
 // routers
 const notesRouter = require('./notes');
 const testingRouter = require('./testing');
+const { Comment } = require('../model');
 
 const router = express();
 
@@ -19,6 +20,9 @@ router.use(requestLogger);
 router.get('/health', async (req, res) => {
   try {
     await sequelize.authenticate();
+
+    await Comment.findOne();
+    
   } catch (error) {
     logger.error(error);
 

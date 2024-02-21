@@ -2,8 +2,8 @@ import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 
 import NotesTable from './NotesTable';
-import NoteForm from './NoteForm';
 import notesService from '../../services/notes';
+import TextareaForm from './TextareaForm';
 
 const loader = async () => {
   return await notesService.getNotes();
@@ -13,7 +13,8 @@ const Notes = () => {
   const loadedNotes = useLoaderData();
   const [notes, setNotes] = useState(loadedNotes);
 
-  const appendNote = (note) => {
+  const createNote = async (content) => {
+    const note = await notesService.postNote({ content });
     setNotes([...notes, note]);
   };
 
@@ -23,7 +24,7 @@ const Notes = () => {
       <NotesTable notes={notes} />
 
       <h3>Create a Note</h3>
-      <NoteForm addNote={appendNote} />
+      <TextareaForm create={createNote} label='Content' maxLength={1000} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import { NOTES } from '../constants';
+import { NOTES, NOTES_WITH_COMMENTS } from '../constants';
 import util from '../../src/util';
 import Note from '../../src/pages/notes/Note';
 import Notes from '../../src/pages/notes/Notes';
@@ -12,10 +12,10 @@ import Notes from '../../src/pages/notes/Notes';
 jest.mock('axios');
 const mockedAxios = axios;
 
-const createNoteRoute = (note) => ({
-  path: `/notes/${note.id}`,
+const createNoteRoute = (noteWithComments) => ({
+  path: `/notes/${noteWithComments.id}`,
   element: <Note />,
-  loader: () => note,
+  loader: () => noteWithComments,
 });
 
 const createNotesRoute = (notes = []) => ({
@@ -113,7 +113,7 @@ describe('<Notes />', () => {
   });
 
   test('can navigate to Note page from a table note', async () => {
-    const routes = [createNotesRoute([note]), createNoteRoute(note)];
+    const routes = [createNotesRoute([note]), createNoteRoute(NOTES_WITH_COMMENTS.SINGLE)];
 
     const router = createMemoryRouter(routes, {
       initialEntries: [routes[0].path],
@@ -133,7 +133,7 @@ describe('<Notes />', () => {
     expect(screen.getByTestId('note')).toBeInTheDocument();
   });
 
-  test('posting a note adds the note to the table', async () => {
+  test('posting a note successfully adds the note to the table', async () => {
     const routes = [createNotesRoute([note])];
 
     const router = createMemoryRouter(routes, {
@@ -161,5 +161,37 @@ describe('<Notes />', () => {
     const tableRows = getNoteTableBodyRows();
     expect(tableRows).toHaveLength(2);
     expectTableRowToHaveNote(tableRows[1], newNote);
+  });
+
+  test('posting a note unsuccessfully does not add the note to the table', async () => {
+    const routes = [createNotesRoute([note])];
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: [routes[0].path],
+    });
+
+    await act(async () => {
+      render(<RouterProvider router={router} />);
+    });
+
+    const message = 'Something bad happened';
+    const mockedResponse = {
+      status: 400,
+      response: { data: { message } },
+    };
+
+    // make the mock thrown an an error response
+    mockedAxios.post.mockRejectedValueOnce(mockedResponse);
+
+    // click note table row to navigate to Note page
+    const user = userEvent.setup();
+    await user.type(getContentArea(), newNote.content);
+    await user.click(getPostButton());
+
+    // expect note not to be in the table
+    const tableRows = getNoteTableBodyRows();
+    expect(tableRows).toHaveLength(1);
+    expect(within(tableRows[0]).queryByRole('cell', { name: newNote.content }))
+      .not.toBeInTheDocument();
   });
 });

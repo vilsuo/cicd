@@ -17,9 +17,17 @@ const postNote = async (values) => {
   return response.data;
 };
 
+const postNoteComment = async (noteId, values) => {
+  const response = await axios.post(`${BASE_URL}/${noteId}/comments`, values);
+  return response.data;
+};
+
 export default {
   getNotes,
   getNote,
   postNote,
+
+  // note comments
+  postNoteComment,
 };
 
