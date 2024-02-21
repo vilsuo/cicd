@@ -26,7 +26,7 @@ const Note = () => {
           <p>{content}</p>
           <div className='details'>
             <span className='detail'>{util.formatDate(createdAt)}</span>
-            <span className='detail'><span>{views}</span> Views</span>
+            <span className='detail'>{views} Views</span>
           </div>
         </div>
 
