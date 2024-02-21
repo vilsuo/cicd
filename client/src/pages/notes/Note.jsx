@@ -3,6 +3,8 @@ import notesService from '../../services/notes';
 
 import util from '../../util';
 import NoteComments from './NoteComments';
+import TextareaForm from './TextareaForm';
+import { useState } from 'react';
 
 const loader = async ({ params }) => {
   const { id } = params;
@@ -11,8 +13,14 @@ const loader = async ({ params }) => {
 
 const Note = () => {
   const note = useLoaderData();
+  const [comments, setComments] = useState(note.comments);
 
-  const { content, views, createdAt, comments } = note;
+  const { content, views, createdAt } = note;
+
+  const createComment = async (content) => {
+    const comment = await notesService.postNoteComment(note.id, { content });
+    setComments([ ...comments, comment ]);
+  };
 
   return (
     <div className='note-page'>
@@ -31,6 +39,7 @@ const Note = () => {
         </div>
 
         <h3>Comments</h3>
+        <TextareaForm create={createComment} label='Content' maxLength={200} />
         <NoteComments comments={comments} />
       </div>
     </div>
