@@ -133,7 +133,7 @@ describe('<Notes />', () => {
     expect(screen.getByTestId('note')).toBeInTheDocument();
   });
 
-  test('posting a note adds the note to the table', async () => {
+  test('posting a note successfully adds the note to the table', async () => {
     const routes = [createNotesRoute([note])];
 
     const router = createMemoryRouter(routes, {
@@ -161,5 +161,37 @@ describe('<Notes />', () => {
     const tableRows = getNoteTableBodyRows();
     expect(tableRows).toHaveLength(2);
     expectTableRowToHaveNote(tableRows[1], newNote);
+  });
+
+  test('posting a note unsuccessfully does not add the note to the table', async () => {
+    const routes = [createNotesRoute([note])];
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: [routes[0].path],
+    });
+
+    await act(async () => {
+      render(<RouterProvider router={router} />);
+    });
+
+    const message = 'Something bad happened';
+    const mockedResponse = {
+      status: 400,
+      response: { data: { message } },
+    };
+
+    // make the mock thrown an an error response
+    mockedAxios.post.mockRejectedValueOnce(mockedResponse);
+
+    // click note table row to navigate to Note page
+    const user = userEvent.setup();
+    await user.type(getContentArea(), newNote.content);
+    await user.click(getPostButton());
+
+    // expect note not to be in the table
+    const tableRows = getNoteTableBodyRows();
+    expect(tableRows).toHaveLength(1);
+    expect(within(tableRows[0]).queryByRole('cell', { name: newNote.content }))
+      .not.toBeInTheDocument();
   });
 });
