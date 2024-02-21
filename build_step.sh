@@ -9,4 +9,5 @@ npm run client:install
 npm run client:deploy
 
 # run database migrations
-NODE_ENV=production node server/src/util/umzug/index.js up
+cd server
+NODE_ENV=production node src/util/umzug/index.js up
