@@ -4,8 +4,8 @@ beforeEach(() => {
   cy.resetDb();
 });
 
-const getForm = () => cy.get('.note-form form');
-const getTable = () => cy.get('.notes-table');
+const getForm = () => cy.get('form');
+const getTable = () => cy.get('table');
 
 const postNote = (content) => {
   getForm().find('textarea').type(content);
@@ -18,7 +18,7 @@ describe('notes', () => {
     cy.contains('Notes');
   });
 
-  describe('one notes page', () => {
+  describe('on notes page', () => {
     beforeEach(() => {
       cy.visit('notes');
     });
