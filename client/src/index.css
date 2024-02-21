@@ -94,10 +94,11 @@ table td, table th {
   }
 }
 
-.note-form {
+/* TEXTAREA FORM (notes page note posting & note page comment posting) */
+.textarea-form {
   max-width: 400px;
 }
-.note-form form {
+.textarea-form form {
   display: flex;
   flex-flow: row wrap;
   justify-content: end;
@@ -105,25 +106,25 @@ table td, table th {
   margin-bottom: 4px;
   border: 1px solid black;
 }
-.note-form form label {
+.textarea-form form label {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   gap: 4px;
   margin-bottom: 4px;
 }
-.note-form form label span:after {
+.textarea-form form label span:after {
   content: ':';
 }
-.note-form form label textarea {
+.textarea-form form label textarea {
   flex: 1;
 }
-.note-form form label textarea:focus {
+.textarea-form form label textarea:focus {
   outline: none !important;
   border: 1px solid black;
   box-shadow: 0 0 10px var(--active);
 }
-.note-form form button[type=submit] {
+.textarea-form form button[type=submit] {
   margin-left: 4px;
 }
 
