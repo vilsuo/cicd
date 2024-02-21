@@ -27,3 +27,17 @@
 Cypress.Commands.add('resetDb', () => {
   cy.request('POST', `${Cypress.env('API_TESTING_URL')}/reset`);
 });
+
+Cypress.Commands.add('postNote', (values) => {
+  cy.request('POST', `${Cypress.env('API_URL')}/notes`, values)
+    .then(response => {
+      return response.body;
+    });
+});
+
+Cypress.Commands.add('postComment', (noteId, values) => {
+  cy.request('POST', `${Cypress.env('API_URL')}/notes/${noteId}/comments`, values)
+    .then(response => {
+      return response.body;
+    });
+});
