@@ -22,17 +22,17 @@ const expectNoteViews = (views) => {
     });
 };
 
-const getSortButton = () => {
-  cy.get('.note-page .comments-sort-box button');
+const getSortButton = () => cy.get('.note-page .comments-sort-box button');
+
+const expectButtonAscending = () => getSortButton().should('to.contain', 'Oldest');
+
+const expectButtonDescending = () => {
+  getSortButton().should('to.contain', 'Latest');
 };
 
-const getCommentForm = () => {
-  return cy.get('form');
-};
+const getCommentForm = () => cy.get('form');
 
-const getComments = () => {
-  return cy.get('.comments .comment');
-};
+const getComments = () => cy.get('.comments .comment');
 
 const postComment = (content) => {
   getCommentForm().find('textarea').type(content);
@@ -124,28 +124,59 @@ describe('note', () => {
         });
       });
 
-      /*
       describe('with multiple comments', () => {
-        const commentContent1 = '';
-        const commentContent2 = '';
-        const commentContent3 = '';
+        const commentContent1 = 'first';
+        const commentContent2 = 'second';
+        const commentContent3 = 'third';
 
         beforeEach(() => {
           cy.postComment(note.id, { content: commentContent1 });
           cy.postComment(note.id, { content: commentContent2 });
           cy.postComment(note.id, { content: commentContent3 });
+
+          visitNotePage(note.id);
         });
 
-        /*
-        TODO TEST
-          - default sort
-          - can sort in reverse
-          - comment is added to end in asc
-          - comment is added to start in desc
-        /*
+        it('sort button is visible', () => {
+          getSortButton();
+        });
 
+        describe('order of comments', () => {
+          const newCommentContent = 'fourth';
+
+          it('default order is ascending by creation date', () => {
+            expectButtonAscending();
+
+            getComments().eq(0).should('to.contain', commentContent1);
+            getComments().eq(1).should('to.contain', commentContent2);
+            getComments().eq(2).should('to.contain', commentContent3);
+          });
+
+          it('creating a new comment with default sort order places it the end', () => {
+            postComment(newCommentContent);
+            getComments().eq(3).should('to.contain', newCommentContent);
+          });
+
+          describe('sorting descending by creation date', () => {
+            beforeEach(() => {
+              getSortButton().click();
+            });
+
+            it('can sort descending by creation date', () => {
+              expectButtonDescending();
+
+              getComments().eq(2).should('to.contain', commentContent1);
+              getComments().eq(1).should('to.contain', commentContent2);
+              getComments().eq(0).should('to.contain', commentContent3);
+            })
+
+            it('when creating a new comment it is placed in the beginning', () => {
+              postComment(newCommentContent);
+              getComments().eq(0).should('to.contain', newCommentContent);
+            });
+          });
+        });
       });
-      */
     });
   });
 });
