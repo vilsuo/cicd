@@ -13,7 +13,8 @@ const Notes = () => {
   const loadedNotes = useLoaderData();
   const [notes, setNotes] = useState(loadedNotes);
 
-  const appendNote = (note) => {
+  const createNote = async (values) => {
+    const note = await notesService.postNote(values);
     setNotes([...notes, note]);
   };
 
@@ -23,7 +24,7 @@ const Notes = () => {
       <NotesTable notes={notes} />
 
       <h3>Create a Note</h3>
-      <NoteForm addNote={appendNote} />
+      <NoteForm createNote={createNote} />
     </div>
   );
 };

@@ -3,23 +3,25 @@ import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 
 import { ErrorNotification } from '../../Notification';
-import notesService from '../../services/notes';
 
-const NoteForm = ({ addNote }) => {
+const NoteForm = ({ createNote }) => {
   const [content, setContent] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const clearMessage = () => setMessage('');
 
+  const clear = () => {
+    setContent('');
+    clearMessage();
+  };
+
   const postNote = async (event) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const note = await notesService.postNote({ content });
-      addNote(note);
-      setContent('');
-      clearMessage();
+      await createNote({ content });
+      clear();
     } catch(error) {
       setMessage(error.response.data.message);
     }
@@ -52,7 +54,7 @@ const NoteForm = ({ addNote }) => {
 };
 
 NoteForm.propTypes = {
-  addNote: PropTypes.func.isRequired,
+  createNote: PropTypes.func.isRequired,
 };
 
 export default NoteForm;

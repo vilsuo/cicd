@@ -1,14 +1,10 @@
 import { render, screen, } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import axios from 'axios';
 
-import { NOTES } from '../constants';
+import { NOTES_WITH_COMMENTS } from '../constants';
 import NoteForm from '../../src/pages/notes/NoteForm';
 
-jest.mock('axios');
-const mockedAxios = axios;
-
-const addNoteMock = jest.fn();
+const createNoteMock = jest.fn();
 
 const getContentArea = () => {
   return screen.getByLabelText(/Content/i);
@@ -19,14 +15,14 @@ const getPostButton = () => {
 };
 
 describe('<NoteForm />', () => {
-  const note = NOTES[0];
+  const note = NOTES_WITH_COMMENTS.EMPTY;
   const { content } = note;
 
   let user;
 
   beforeEach(() => {
     user = userEvent.setup();
-    render(<NoteForm addNote={addNoteMock} />);
+    render(<NoteForm createNote={createNoteMock} />);
   });
 
   test('textarea is empty', async () => {
@@ -42,14 +38,8 @@ describe('<NoteForm />', () => {
 
   describe('submitting the form', () => {
     describe('successfully', () => {
-      const mockedResponse = {
-        data: note,
-        status: 201,
-      };
-
       beforeEach(async () => {
-        // make the mock return the custom axios response
-        mockedAxios.post.mockResolvedValueOnce(mockedResponse);
+        createNoteMock.mockResolvedValueOnce(note);
         
         // type into form and submit
         await user.type(getContentArea(), content);
@@ -57,7 +47,9 @@ describe('<NoteForm />', () => {
       });
 
       test('adds the created note', async () => {
-        expect(addNoteMock).toHaveBeenCalledWith(mockedResponse.data);
+        expect(createNoteMock).toHaveBeenCalledWith({ content });
+
+        expect(createNoteMock.mock.results[0].value).resolves.toBe(note);
       });
 
       test('clears text area', () => {
@@ -73,16 +65,17 @@ describe('<NoteForm />', () => {
       };
 
       beforeEach(async () => {
-        // make the mock thrown an error
-        mockedAxios.post.mockRejectedValueOnce(mockedResponse);
+        // make the mock return an error response
+        createNoteMock.mockRejectedValueOnce(mockedResponse);
         
         // type into form and submit
         await user.type(getContentArea(), content);
         await user.click(getPostButton());
       });
 
-      test('a note is not added', async () => {
-        expect(addNoteMock).not.toHaveBeenCalled();
+      test('an error response is returned', async () => {
+        expect(createNoteMock).toHaveBeenCalledWith({ content });
+        expect(createNoteMock.mock.results[0].value).rejects.toBe(mockedResponse);
       });
 
       test('text area is not cleared', () => {
