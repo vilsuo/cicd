@@ -1,13 +1,13 @@
-const { Sequelize } = require('sequelize');
-const logger = require('./logger');
-const { POSTGRES_URL } = require('../config');
+import { Sequelize } from 'sequelize';
+import * as logger from './logger';
+import { POSTGRES_URL } from '../config';
 
-const sequelize = new Sequelize(POSTGRES_URL, {
+export const sequelize = new Sequelize(POSTGRES_URL, {
   logging: false,
   pool: { max: 4 }, // ElephantSQL allows 5 connections
 });
 
-const connectToDatabases = async () => {
+export const connectToDatabases = async () => {
   try {
     await sequelize.authenticate();
     logger.info('Connected to the Postgres database');
@@ -19,9 +19,4 @@ const connectToDatabases = async () => {
   }
 
   return null;
-};
-
-module.exports = {
-  sequelize,
-  connectToDatabases,
 };

@@ -1,5 +1,5 @@
-const Note = require('./note');
-const Comment = require('./comment');
+import Note from './note';
+import Comment from './comment';
 
 Note.hasMany(Comment, {
   foreignKey: { allowNull: false }, // Comment can not exist without a Note
@@ -7,7 +7,7 @@ Note.hasMany(Comment, {
 });
 Comment.belongsTo(Note);
 
-module.exports = {
+export {
   Note,
   Comment,
 };
