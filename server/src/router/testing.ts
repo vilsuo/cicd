@@ -10,4 +10,4 @@ router.post('/reset', async (req, res) => {
   return res.sendStatus(204);
 });
 
-module.exports = router;
+export default router;
