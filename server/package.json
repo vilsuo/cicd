@@ -48,12 +48,14 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "rootDir": "test",
+    "testRegex": ".*\\.test\\.[j|t]s$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "clearMocks": true,
     "setupFilesAfterEnv": [
-      "./test/suiteSetup.ts"
+      "./suiteSetup.ts"
     ]
   }
 }
