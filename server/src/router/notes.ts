@@ -26,7 +26,7 @@ const singleRouter = express.Router();
 
 singleRouter.get('/', async (req, res) => {
   const { note } = req;
-  return res.send(await note.increment('views'));
+  return res.send(await note.view());
 });
 
 const commentsRouter = express.Router();
