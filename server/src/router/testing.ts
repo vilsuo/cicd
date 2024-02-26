@@ -1,6 +1,7 @@
-const { sequelize } = require('../util/db');
+import { sequelize } from '../util/db';
+import express from 'express';
 
-const router = require('express').Router();
+const router = express.Router();
 
 router.post('/reset', async (req, res) => {
   // Create all tables, dropping them first if they already exist.

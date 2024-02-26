@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
 
-const router = require('express').Router();
-const noteFinder = require('../middleware/noteFinder');
-const parser = require('../util/parser');
-const { Note, Comment } = require('../model');
+import noteFinder from '../middleware/noteFinder';
+import parser from '../util/parser';
+import { Note, Comment } from '../model';
+
+const router = express.Router();
 
 router.get('/', async (req, res) => {
   const notes = await Note.findAll({});
@@ -36,6 +37,8 @@ commentsRouter.post('/', async (req, res) => {
 
   const comment = await Comment.create({
     content,
+
+    //@ts-ignore
     noteId: note.id,
   });
 
@@ -46,4 +49,4 @@ singleRouter.use('/comments', commentsRouter);
 
 router.use('/:id', noteFinder, singleRouter);
 
-module.exports = router;
+export default router;

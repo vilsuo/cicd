@@ -1,7 +1,7 @@
 import path from 'path';
 import express from 'express';
 require('express-async-errors');
-const router = require('./router');
+import router from './router';
 
 const app = express();
 

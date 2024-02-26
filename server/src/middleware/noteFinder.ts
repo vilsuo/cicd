@@ -1,7 +1,8 @@
-const { Note, Comment } = require('../model');
-const parser = require('../util/parser');
+import { NextFunction, Request, Response } from 'express';
+import { Note, Comment } from '../model';
+import parser from '../util/parser';
 
-const noteFinder = async (req, res, next) => {
+const noteFinder = async (req: Request, res: Response, next: NextFunction) => {
   const id = parser.parseId(req.params.id);
   const note = await Note.findByPk(id, {
     include: {
@@ -18,4 +19,4 @@ const noteFinder = async (req, res, next) => {
   return next();
 };
 
-module.exports = noteFinder;
+export default noteFinder;

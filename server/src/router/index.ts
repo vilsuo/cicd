@@ -1,16 +1,16 @@
-const express = require('express');
-const { sequelize } = require('../util/db');
-const logger = require('../util/logger');
+import express from 'express';
+import { sequelize } from '../util/db';
+import * as logger from '../util/logger';
 
 // middleware
-const requestLogger = require('../middleware/requestLogger');
-const unknownEndpoint = require('../middleware/unknownEndpoint');
-const errorHandler = require('../middleware/errorHandler');
+import requestLogger from '../middleware/requestLogger';
+import unknownEndpoint from '../middleware/unknownEndpoint';
+import errorHandler from '../middleware/errorHandler';
 
 // routers
-const notesRouter = require('./notes');
-const testingRouter = require('./testing');
-const { Comment } = require('../model');
+import notesRouter from './notes';
+import testingRouter from './testing';
+import { Comment } from '../model';
 
 const router = express();
 
@@ -44,4 +44,4 @@ if (process.env.NODE_ENV === 'test') {
 router.use(unknownEndpoint);
 router.use(errorHandler);
 
-module.exports = router;
+export default router;
