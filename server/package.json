@@ -53,7 +53,7 @@
     },
     "clearMocks": true,
     "setupFilesAfterEnv": [
-      "./test/suiteSetup.js"
+      "./test/suiteSetup.ts"
     ]
   }
 }

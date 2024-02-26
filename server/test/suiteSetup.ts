@@ -7,7 +7,7 @@ meant for code which is repeating in each test file. Having the test framework
 installed makes Jest globals, jest object and expect accessible in the modules. 
 */
 
-const { sequelize, connectToDatabases } = require('../src/util/db');
+import { sequelize, connectToDatabases } from '../src/util/db';
 
 beforeAll(async () => {
   await connectToDatabases();
