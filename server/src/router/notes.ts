@@ -37,8 +37,6 @@ commentsRouter.post('/', async (req, res) => {
 
   const comment = await Comment.create({
     content,
-
-    //@ts-ignore
     noteId: note.id,
   });
 

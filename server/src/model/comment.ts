@@ -18,10 +18,9 @@ class Comment extends Model<
   // Comment.belongsTo) by branding them using the `ForeignKey` type,
   // `Comment.init` will know it does not need to display an error if noteId
   // is missing.
-  //declare noteId: ForeignKey<Note['id']>;
+  declare noteId: ForeignKey<Note['id']>;
 
-  // `note` is an eagerly-loaded association.
-  // We tag it as `NonAttribute`
+  // `note` is an eagerly-loaded association. We tag it as `NonAttribute`
   //declare note?: NonAttribute<Note>;
 }
 
