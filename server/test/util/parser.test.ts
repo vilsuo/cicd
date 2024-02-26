@@ -1,12 +1,17 @@
-const ParseError = require('../../src/util/error');
-const { parseId, parseText } = require('../../src/util/parser');
+import { ParseError } from '../../src/util/error';
+import { parseId, parseText } from '../../src/util/parser';
 
-const expectToThrow = (fn, value, error) => {
-  expect(() => fn(value)).toThrow(error);
+const expectToThrow = (
+  fn: (arg0: unknown) => string | number,
+  value: unknown,
+) => {
+  expect(() => fn(value)).toThrow(ParseError);
 };
 
 describe('parseId', () => {
-  const expectParseIdToThrow = (value) => expectToThrow(parseId, value, ParseError);
+  const expectParseIdToThrow = (value: unknown = undefined) => {
+    expectToThrow(parseId, value);
+  };
 
   test('parsing without a value throws', () => { expectParseIdToThrow(); });
 
@@ -57,7 +62,9 @@ describe('parseId', () => {
 });
 
 describe('parseText', () => {
-  const expectParseTextToThrow = (value) => expectToThrow(parseText, value, ParseError);
+  const expectParseTextToThrow = (value: unknown = undefined) => {
+    expectToThrow(parseText, value);
+  };
 
   test('parsing without a value throws', () => { expectParseTextToThrow(); });
 

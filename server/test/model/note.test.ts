@@ -1,6 +1,8 @@
-const { Sequelize } = require('sequelize');
-const { Note } = require('../../src/model');
-const { NOTE_MIN_CONTENT_LENGTH, NOTE_MAX_CONTENT_LENGTH } = require('../../src/model/constants');
+import { CreationAttributes, ValidationError } from 'sequelize';
+import { Note } from '../../src/model';
+import {
+  NOTE_MIN_CONTENT_LENGTH, NOTE_MAX_CONTENT_LENGTH
+} from '../../src/model/constants';
 
 beforeEach(async () => {
   await Note.sync({ force: true });
@@ -9,9 +11,9 @@ beforeEach(async () => {
 describe('Note', () => {
   const testContent = 'Test content';
 
-  const expectValidationError = async (values) => {
+  const expectValidationError = async (values: CreationAttributes<Note>) => {
     await expect(async () => await Note.create(values))
-      .rejects.toThrow(Sequelize.ValidationError);
+      .rejects.toThrow(ValidationError);
   };
 
   test('created Note has default zero views', async () => {
