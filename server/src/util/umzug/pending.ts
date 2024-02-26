@@ -1,6 +1,6 @@
-const { sequelize } = require('../db');
-const umzug = require('./index');
-const logger = require('../logger');
+import { sequelize } from '../db';
+import umzug from './index';
+import * as logger from '../logger';
 
 /**
  * List all pending migrations
