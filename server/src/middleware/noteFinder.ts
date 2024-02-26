@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Note, Comment } from '../model';
-import parser from '../util/parser';
+import * as parser from '../util/parser';
 
 const noteFinder = async (req: Request, res: Response, next: NextFunction) => {
   const id = parser.parseId(req.params.id);

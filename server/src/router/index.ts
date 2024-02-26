@@ -10,7 +10,14 @@ import errorHandler from '../middleware/errorHandler';
 // routers
 import notesRouter from './notes';
 import testingRouter from './testing';
-import { Comment } from '../model';
+import { Comment, Note } from '../model';
+
+// modify express request object
+declare module 'express-serve-static-core' {
+  interface Request {
+    note?: Note;
+  }
+}
 
 const router = express();
 

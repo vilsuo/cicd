@@ -1,7 +1,7 @@
 import express from 'express';
 
 import noteFinder from '../middleware/noteFinder';
-import parser from '../util/parser';
+import * as parser from '../util/parser';
 import { Note, Comment } from '../model';
 
 const router = express.Router();

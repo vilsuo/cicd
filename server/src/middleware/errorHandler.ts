@@ -1,18 +1,19 @@
-const { Sequelize } = require('sequelize');
-const logger = require('../util/logger');
-const ParseError = require('../util/error');
+import { ValidationError } from 'sequelize';
+import * as logger from '../util/logger';
+import { ParseError } from '../util/error';
+import { ErrorRequestHandler } from 'express';
 
-const createMessageFromErrorArray = (errors) => {
+const createMessageFromErrorArray = (errors: Array<{ message: string }>) => {
   return errors.map((err) => err.message).join('. ');
 };
 
 // eslint-disable-next-line no-unused-vars
-const errorHandler = (error, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   logger.info('Error', error.message);
   
   switch(true) {
     // https://github.com/sequelize/sequelize/blob/3e5b8772ef75169685fc96024366bca9958fee63/lib/errors.js
-    case error instanceof Sequelize.ValidationError: {
+    case error instanceof ValidationError: {
       return res.status(400).send({
         message: createMessageFromErrorArray(error.errors),
       });
@@ -31,4 +32,4 @@ const errorHandler = (error, req, res, next) => {
   }
 };
 
-module.exports = errorHandler;
+export default errorHandler;
