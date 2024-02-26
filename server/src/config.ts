@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 // `${DB_DIALECT}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
 const POSTGRES_URL_TEST = 'postgres://postgres:secret@localhost:5434/cicd_test';
@@ -11,7 +9,6 @@ const POSTGRES_URLS = {
   production: process.env.POSTGRES_URL,
 };
 
-module.exports = {
-  POSTGRES_URL: POSTGRES_URLS[process.env.NODE_ENV],
-  PORT: process.env.PORT || 3000,
-};
+export const POSTGRES_URL = POSTGRES_URLS[process.env.NODE_ENV];
+
+export const PORT = process.env.PORT || 3000;

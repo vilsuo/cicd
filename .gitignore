@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+build
 
 # dev database volume
 pg_database

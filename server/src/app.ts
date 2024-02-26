@@ -1,5 +1,5 @@
-const path = require('path');
-const express = require('express');
+import path from 'path';
+import express from 'express';
 require('express-async-errors');
 const router = require('./router');
 
@@ -15,4 +15,4 @@ app.use('*',  (req, res) => {
   res.sendFile(path.join(DIST, 'index.html'));
 });
 
-module.exports = app;
+export default app;
