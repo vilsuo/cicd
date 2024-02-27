@@ -1,33 +1,17 @@
 import noteFinder from '../../src/middleware/noteFinder';
-import * as parser from '../../src/util/parser';
 import * as noteService from '../../src/service/noteService';
 import { Note, Comment } from '../../src/model';
 import { ParseError } from '../../src/util/error';
 import { NextFunction, Request, Response } from 'express';
 import { Attributes } from 'sequelize';
 import { NoteDto } from '../../src/types';
-
-const parseIdSpy = jest.spyOn(parser, 'parseId');
+import { commentAttr, noteAttr } from '../constants';
 
 const findNoteWithCommentsSpy = jest.spyOn(noteService, 'findNoteWithComments');
 
 const next: NextFunction = jest.fn();
 
-const noteAttr: Attributes<Note> = {
-  id: 1,
-  content: 'Initial note',
-  views: 5,
-  createdAt: new Date('2024-02-11T23:14:44.770Z'),
-};
-
 const note: Required<Note> = Note.build(noteAttr);
-
-const commentAttr: Attributes<Comment> = {
-  id: 2,
-  content: 'Comment to the note',
-  createdAt: new Date('2024-02-20T15:32:55.770Z'),
-  noteId: 1,
-};
 
 const comment = Comment.build(commentAttr);
 
@@ -43,31 +27,27 @@ const callNoteFinder = async (request: Partial<Request>, cb: NextFunction) => {
 const createRequest = (id: any): Partial<Request> => ({ params: { id } });
 
 describe('noteFinder', () => {
+  const id = 1;
   let request: Partial<Request>;
 
-  describe('valid id', () => {
-    const idString = '1';
-    const idNumber = 1;
-
+  describe('when noteService does not throw', () => {
     beforeEach(async () => {
-      request = createRequest(idString);
-      parseIdSpy.mockImplementationOnce(() => idNumber);
+      request = createRequest(id);
     });
 
     afterEach(() => {
-      expect(parseIdSpy).toHaveBeenCalledWith(idString);
-      expect(findNoteWithCommentsSpy).toHaveBeenCalledWith(idNumber);
+      expect(findNoteWithCommentsSpy).toHaveBeenCalledWith(id);
     });
 
-    describe('existing Note', () => {
+    describe('when a note is found', () => {
       describe('without any Comments', () => {
-        const noteWithComments: NoteDto = {
+        const noteEmptyComments: NoteDto = {
           ...note,
           comments: [],
         };
 
         beforeEach(async () => {
-          findNoteWithCommentsSpy.mockImplementationOnce(async () => noteWithComments);
+          findNoteWithCommentsSpy.mockImplementationOnce(async () => noteEmptyComments);
           await callNoteFinder(request, next);
         });
   
@@ -87,13 +67,13 @@ describe('noteFinder', () => {
       });
 
       describe('with a Comment', () => {
-        const noteWithComments: NoteDto = {
+        const noteWithAComment: NoteDto = {
           ...note,
           comments: [comment],
         };
 
         beforeEach(async () => {
-          findNoteWithCommentsSpy.mockImplementationOnce(async () => noteWithComments);
+          findNoteWithCommentsSpy.mockImplementationOnce(async () => noteWithAComment);
           await callNoteFinder(request, next);
         });
   
@@ -115,8 +95,9 @@ describe('noteFinder', () => {
       });
     });
 
-    describe('non-existing Note', () => {
+    describe('when a note is not found', () => {
       beforeEach(async () => {
+        // mock note not found by returning undefined
         findNoteWithCommentsSpy.mockImplementationOnce(async () => undefined);
         await callNoteFinder(request, next);
       });
@@ -143,20 +124,18 @@ describe('noteFinder', () => {
     });
   });
 
-  test('invalid id throws an Error', async () => {
-    const idInvalid = 'abc';
-    const request = createRequest(idInvalid);
+  test('next middleware is not called when noteService throws an Error', async () => {
+    request = createRequest(id);
 
-    // mock parser to throw an Error
-    parseIdSpy.mockImplementationOnce(() => { throw new ParseError('some error'); });
+    findNoteWithCommentsSpy.mockImplementationOnce(() => {
+      throw new ParseError('some error');
+    });
 
     await expect(async () => await callNoteFinder(request, next))
       .rejects.toThrow(ParseError);
 
-    expect(parseIdSpy).toHaveBeenCalledWith(idInvalid);
+    expect(findNoteWithCommentsSpy).toHaveBeenCalledWith(id);
 
-    expect(findNoteWithCommentsSpy).not.toHaveBeenCalled();
-    
     expect(next).not.toHaveBeenCalled();
   });
 });
