@@ -1,10 +1,10 @@
-const supertest = require('supertest');
-const app = require('../../src/app');
-const { Note, Comment } = require('../../src/model');
+import supertest from 'supertest';
+import app from '../../src/app';
+import { Note, Comment } from '../../src/model';
 
 const api = supertest(app);
 
-const postComment = async (noteId, values, code) => {
+const postComment = async (noteId: number, values: string | object, code: number) => {
   const response = await api
     .post(`/api/notes/${noteId}/comments`)
     .send(values)

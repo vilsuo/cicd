@@ -1,6 +1,6 @@
-const supertest = require('supertest');
-const app = require('../../src/app');
-const { Note, Comment } = require('../../src/model');
+import supertest from 'supertest';
+import app from '../../src/app';
+import { Note, Comment } from '../../src/model';
 
 const api = supertest(app);
 
@@ -13,7 +13,7 @@ const getNotes = async () => {
   return response.body;
 };
 
-const getNote = async (id, code) => {
+const getNote = async (id: number, code: number) => {
   const response = await api
     .get(`/api/notes/${id}`)
     .expect(code)
@@ -22,7 +22,7 @@ const getNote = async (id, code) => {
   return response.body;
 };
 
-const postNote = async (values, code) => {
+const postNote = async (values: string | object, code: number) => {
   const response = await api
     .post('/api/notes')
     .send(values)
@@ -113,8 +113,8 @@ describe('POST notes', () => {
       expect(note.views).toBe(0);
     });
 
-    test('posted Note does not have any Comments', async () => {
-      expect(note.comments).toHaveLength(0);
+    test('posted Note does not have Comments attached', async () => {
+      expect(note).not.toHaveProperty('comments');
     });
   
     test('posted Note is returned', async () => {
