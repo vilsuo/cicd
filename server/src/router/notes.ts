@@ -1,25 +1,20 @@
 import express from 'express';
 
 import noteFinder from '../middleware/noteFinder';
+import * as noteService from '../service/noteService';
 import * as parser from '../util/parser';
 import { Note, Comment } from '../model';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const notes = await Note.findAll({});
-
+  const notes = await Note.findAll();
   return res.send(notes);
 });
 
 router.post('/', async (req, res) => {
-  const content = parser.parseText(req.body.content);
-  const note = await Note.create({ content });
-
-  return res.status(201).send({
-    ...note.toJSON(),
-    comments: []
-  });
+  const note = await noteService.createNote(req.body);
+  return res.status(201).send(note);
 });
 
 const singleRouter = express.Router();
