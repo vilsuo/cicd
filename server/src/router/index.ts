@@ -11,11 +11,12 @@ import errorHandler from '../middleware/errorHandler';
 import notesRouter from './notes';
 import testingRouter from './testing';
 import { Comment, Note } from '../model';
+import { NoteDto } from '../types';
 
 // modify express request object
 declare module 'express-serve-static-core' {
   interface Request {
-    note?: Note;
+    note?: NoteDto;
   }
 }
 
