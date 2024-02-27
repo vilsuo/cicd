@@ -36,7 +36,7 @@ describe('Note', () => {
       await expectValidationError({ content: tooShortContent });
 
       const content = '#'.repeat(NOTE_MIN_CONTENT_LENGTH);
-      await expect(Note.create({ content })).resolves.not.toThrowError();
+      await expect(Note.create({ content })).resolves.not.toThrow();
     });
 
     test('long content', async () => {
@@ -44,7 +44,7 @@ describe('Note', () => {
       await expectValidationError({ content: tooLongContent });
 
       const content = '#'.repeat(NOTE_MAX_CONTENT_LENGTH);
-      await expect(Note.create({ content })).resolves.not.toThrowError();
+      await expect(Note.create({ content })).resolves.not.toThrow();
     });
   });
 
