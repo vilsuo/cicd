@@ -8,8 +8,9 @@ export const createNote = async (values: CreationAttributes<Note>): Promise<Note
   return await Note.create({ content: noteContent });
 };
 
-export const findNoteWithComments = async (id: number): Promise<NoteDto> => {
-  const note = await Note.findByPk(id, {
+export const findNoteWithComments = async (id: unknown): Promise<NoteDto> => {
+  const noteId = parser.parseId(id);
+  const note = await Note.findByPk(noteId, {
     include: {
       model: Comment,
       attributes: { exclude: ['noteId'] },
