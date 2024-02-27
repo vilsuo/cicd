@@ -9,6 +9,11 @@ const POSTGRES_URLS = {
   production: process.env.POSTGRES_URL,
 };
 
-export const POSTGRES_URL = POSTGRES_URLS[process.env.NODE_ENV];
+const NODE_ENV = process.env.NODE_ENV;
+if (NODE_ENV !== 'test' && NODE_ENV !== 'development' && NODE_ENV !== 'production') {
+  throw new Error('Invalid environment');
+}
+
+export const POSTGRES_URL: string = POSTGRES_URLS[NODE_ENV];
 
 export const PORT = process.env.PORT || 3000;

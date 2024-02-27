@@ -1,11 +1,9 @@
 import { 
-  Model, DataTypes, InferAttributes, InferCreationAttributes, 
-  CreationOptional, NonAttribute, Association
+  Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, 
 } from 'sequelize';
 
 import { sequelize } from '../util/db';
 import { NOTE_MIN_CONTENT_LENGTH, NOTE_MAX_CONTENT_LENGTH } from './constants';
-import Comment from './comment';
 
 class Note extends Model<
   InferAttributes<Note>, InferCreationAttributes<Note>

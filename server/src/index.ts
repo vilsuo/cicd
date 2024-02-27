@@ -11,4 +11,7 @@ const start = async () => {
   });
 };
 
-start();
+start().then(
+  () => {},
+  (err) => { throw err; }
+);

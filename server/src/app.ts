@@ -11,7 +11,7 @@ const DIST = path.join(__dirname, '..', 'dist');
 
 app.use(express.static(DIST));
 
-app.use('*',  (req, res) => {
+app.use('*',  (_req, res) => {
   res.sendFile(path.join(DIST, 'index.html'));
 });
 

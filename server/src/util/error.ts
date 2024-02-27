@@ -3,4 +3,4 @@ export class ParseError extends Error {
     super(message);
     this.name = 'ParseError';
   }
-};
+}

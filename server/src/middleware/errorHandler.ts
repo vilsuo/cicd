@@ -8,7 +8,7 @@ const createMessageFromErrorArray = (errors: Array<{ message: string }>) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   logger.info('Error', error.message);
   
   switch(true) {

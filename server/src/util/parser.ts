@@ -27,12 +27,11 @@ export const parseId = (value: unknown, name = 'id') => {
 };
 
 /**
- * Check if the value is a string.
+ * Check if the value is a string, throw otherwise
  * 
- * @param {*} value 
- * @param {*} name 
+ * @param value 
+ * @param name 
  * @returns parameter value, if it is a string
- * @throws ParseError if parameter is not a string
  */
 export const parseText = (value: unknown, name = 'content') => {
   return parseString(parseDefined(value, name), name);

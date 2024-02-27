@@ -1,4 +1,4 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey, NonAttribute } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey } from 'sequelize';
 import { sequelize } from '../util/db';
 import { COMMENT_MIN_CONTENT_LENGTH, COMMENT_MAX_CONTENT_LENGTH } from './constants';
 import Note from './note';

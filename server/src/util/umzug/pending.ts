@@ -16,5 +16,5 @@ const pendingMigrations = async () => {
 
 if (require.main === module) {
   // this module was run directly from the command line as in node xxx.js
-  pendingMigrations();
+  void pendingMigrations();
 }

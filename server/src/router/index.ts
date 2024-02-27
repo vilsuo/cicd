@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import { sequelize } from '../util/db';
 import * as logger from '../util/logger';
 
@@ -10,7 +10,7 @@ import errorHandler from '../middleware/errorHandler';
 // routers
 import notesRouter from './notes';
 import testingRouter from './testing';
-import { Comment, Note } from '../model';
+import { Comment } from '../model';
 import { NoteDto } from '../types';
 
 // modify express request object
@@ -25,7 +25,7 @@ const router = express();
 router.use(express.json());
 router.use(requestLogger);
 
-router.get('/health', async (req, res) => {
+router.get('/health', (async (_req, res) => {
   try {
     await sequelize.authenticate();
 
@@ -41,7 +41,7 @@ router.get('/health', async (req, res) => {
     });
   }
   return res.send({ message: 'ok' });
-});
+}) as RequestHandler);
 
 router.use('/notes', notesRouter);
 

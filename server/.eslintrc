@@ -1,0 +1,36 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["dist", "build", "pg_database"],
+  "plugins": [
+    "@stylistic/js", "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "rules": {
+    "eqeqeq": "error",
+    "no-console": 0,
+    "@stylistic/js/object-curly-spacing": ["error", "always"],
+    "@stylistic/js/quote-props": ["error", "as-needed"],
+    "@stylistic/js/eol-last": ["error", "always"],
+    "@stylistic/js/arrow-spacing": ["error", { "before": true, "after": true }],
+    "@stylistic/js/indent": ["error", 2, { "SwitchCase": 1 }],
+    "@stylistic/js/quotes": ["error", "single"],
+    "@stylistic/js/semi": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ]
+  }
+}
