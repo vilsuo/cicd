@@ -21,7 +21,7 @@ export const createNote = async (values: unknown): Promise<Note> => {
 };
 */
 
-export const findNoteWithComments = async (id: unknown): Promise<NoteDto> => {
+export const findNoteWithComments = async (id: unknown): Promise<NoteDto | null> => {
   const noteId = parser.parseId(id);
   const note = await Note.findByPk(noteId, {
     include: {
@@ -30,5 +30,5 @@ export const findNoteWithComments = async (id: unknown): Promise<NoteDto> => {
     }
   });
 
-  return note as NoteDto;
+  return note as NoteDto | null;
 };
