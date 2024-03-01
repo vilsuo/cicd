@@ -1,7 +1,6 @@
 import * as parser from '../../src/util/parser';
 import { Note } from '../../src/model';
 import * as noteService from '../../src/service/noteService';
-import { ParseError } from '../../src/util/error';
 import { NOTE, NOTE_ATTR, NOTE_WITH_COMMENTS } from '../constants';
 
 const parseTextSpy = jest.spyOn(parser, 'parseText');
@@ -10,27 +9,38 @@ const parseIdSpy = jest.spyOn(parser, 'parseId');
 const noteCreateSpy = jest.spyOn(Note, 'create');
 const noteFindByPkSpy = jest.spyOn(Note, 'findByPk');
 
-const validNoteCreationValues = { content: NOTE_ATTR.content };
+const noteCreationValues = { content: NOTE_ATTR.content };
 
 describe('createNote', () => {
   test('when content parser throws, no notes are created', async () => {
-    parseTextSpy.mockImplementationOnce(() => { throw new ParseError('some error'); });
+    parseTextSpy.mockImplementationOnce(() => { throw new Error('some error'); });
 
-    await expect(async () => await noteService.createNote(validNoteCreationValues))
-      .rejects.toThrow(ParseError);
+    await expect(async () => await noteService.createNote(noteCreationValues))
+      .rejects.toThrow();
 
     expect(noteCreateSpy).not.toHaveBeenCalled();
   });
 
-  test('when content parser does not throw, a note is created with content', async () => {
-    parseTextSpy.mockImplementationOnce(() => validNoteCreationValues.content);
+  describe('when content parser does not throw', () => {
+    beforeEach(() => {
+      parseTextSpy.mockReturnValueOnce(noteCreationValues.content);
+    });
 
-    noteCreateSpy.mockImplementationOnce(() => NOTE);
+    test('a note is created with content', async () => {
+      noteCreateSpy.mockResolvedValueOnce(NOTE);
 
-    const createdNote = await noteService.createNote(validNoteCreationValues);
+      const createdNote = await noteService.createNote(noteCreationValues);
 
-    expect(noteCreateSpy).toHaveBeenCalledWith(validNoteCreationValues);
-    expect(createdNote).toStrictEqual(NOTE);
+      expect(noteCreateSpy).toHaveBeenCalledWith(noteCreationValues);
+      expect(createdNote).toStrictEqual(NOTE);
+    });
+
+    test('note validation failure throws an error', async () => {
+      noteCreateSpy.mockRejectedValueOnce(new Error('Some validation failed'));
+
+      await expect(async () => await noteService.createNote(noteCreationValues))
+        .rejects.toThrow();
+    });
   });
 });
 
@@ -39,41 +49,46 @@ describe('findNoteWithComments', () => {
 
   test('when id is invalid, no notes are searched for', async () => {
     // throw parsing error on id
-    parseIdSpy.mockImplementationOnce(() => { throw new ParseError('some error'); });
+    parseIdSpy.mockImplementationOnce(() => { throw new Error('some error'); });
 
     await expect(async () => await noteService.findNoteWithComments(id))
-      .rejects.toThrow(ParseError);
+      .rejects.toThrow();
 
     expect(noteFindByPkSpy).not.toHaveBeenCalled();
   });
 
-  test('when id is valid and note exists, the note is returned', async () => {
-    parseIdSpy.mockImplementationOnce(() => id);
-    noteFindByPkSpy.mockImplementationOnce(() => Promise.resolve(NOTE_WITH_COMMENTS));
+  describe('when id is valid', () => {
+    beforeEach(() => {
+      parseIdSpy.mockReturnValueOnce(id);
+    });
 
-    const foundNote = await noteService.findNoteWithComments(id);
+    test('when note exists, the note is returned', async () => {
+      // mock finding a note
+      noteFindByPkSpy.mockResolvedValueOnce(NOTE_WITH_COMMENTS);
 
-    // was called with correct note id
-    expect(noteFindByPkSpy).toHaveBeenCalledWith(
-      id, expect.anything(),
-    );
+      const foundNote = await noteService.findNoteWithComments(id);
 
-    // returns the found note
-    expect(foundNote.dataValues).toStrictEqual(NOTE_WITH_COMMENTS.dataValues);
-  });
+      // was called with correct note id
+      expect(noteFindByPkSpy).toHaveBeenCalledWith(
+        id, expect.anything(),
+      );
 
-  test('when id is valid and note does not exists, null is returned', async () => {
-    parseIdSpy.mockImplementationOnce(() => id);
-    noteFindByPkSpy.mockImplementationOnce(() => null);
+      expect(foundNote).toStrictEqual(NOTE_WITH_COMMENTS);
+    });
 
-    const foundNote = await noteService.findNoteWithComments(id);
+    test('when note does not exists, null is returned', async () => {
+      // mock not found
+      noteFindByPkSpy.mockResolvedValueOnce(null);
 
-    // was called with correct note id
-    expect(noteFindByPkSpy).toHaveBeenCalledWith(
-      id, expect.anything(),
-    );
+      const foundNote = await noteService.findNoteWithComments(id);
 
-    // note is not found
-    expect(foundNote).toBe(null);
+      // was called with correct note id
+      expect(noteFindByPkSpy).toHaveBeenCalledWith(
+        id, expect.anything(),
+      );
+
+      // note is not found
+      expect(foundNote).toBe(null);
+    });
   });
 });

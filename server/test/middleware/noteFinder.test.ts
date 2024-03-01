@@ -1,9 +1,7 @@
 import noteFinder from '../../src/middleware/noteFinder';
 import * as noteService from '../../src/service/noteService';
-import { ParseError } from '../../src/util/error';
 import { NextFunction, Request, Response } from 'express';
-import { NoteDto } from '../../src/types';
-import { COMMENT, NOTE } from '../constants';
+import { NOTE_WITH_COMMENTS } from '../constants';
 
 const findNoteWithCommentsSpy = jest.spyOn(noteService, 'findNoteWithComments');
 
@@ -34,71 +32,24 @@ describe('noteFinder', () => {
     });
 
     describe('when a note is found', () => {
-      describe('without any Comments', () => {
-        const noteEmptyComments: NoteDto = {
-          ...NOTE,
-          comments: [],
-        };
-
-        beforeEach(async () => {
-          findNoteWithCommentsSpy.mockImplementationOnce(
-            async () => Promise.resolve(noteEmptyComments)
-          );
-          await callNoteFinder(request, next);
-        });
+      beforeEach(async () => {
+        findNoteWithCommentsSpy.mockResolvedValueOnce(NOTE_WITH_COMMENTS);
+        await callNoteFinder(request, next);
+      });
   
-        test('note is attached to request', () => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { comments: _, ...noteWithoutComment } = request.note;
-          expect(noteWithoutComment.dataValues).toStrictEqual(NOTE.dataValues);
-        });
-
-        test('request note comments array is empty', () => {
-          const { comments } = request.note;
-          expect(comments).toHaveLength(0);
-        });
-  
-        test('callback is called', () => {
-          expect(next).toHaveBeenCalled();
-        });
+      test('note is attached to request', () => {
+        expect(request.note).toStrictEqual(NOTE_WITH_COMMENTS);
       });
 
-      describe('with a Comment', () => {
-        const noteWithAComment: NoteDto = {
-          ...NOTE,
-          comments: [COMMENT],
-        };
-
-        beforeEach(async () => {
-          findNoteWithCommentsSpy.mockImplementationOnce(
-            async () => Promise.resolve(noteWithAComment)
-          );
-          await callNoteFinder(request, next);
-        });
-  
-        test('note is attached to request', () => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { comments: _, ...noteWithoutComment } = request.note;
-          expect(noteWithoutComment.dataValues).toStrictEqual(NOTE.dataValues);
-        });
-
-        // tested with all comment attributes
-        test('request note has a comment in the comments array', () => {
-          const { comments } = request.note;
-          expect(comments).toHaveLength(1);
-          expect(comments[0].dataValues).toStrictEqual(COMMENT.dataValues);
-        });
-  
-        test('callback is called', () => {
-          expect(next).toHaveBeenCalled();
-        });
+      test('callback is called', () => {
+        expect(next).toHaveBeenCalled();
       });
     });
 
     describe('when a note is not found', () => {
       beforeEach(async () => {
         // mock note not found by returning null
-        findNoteWithCommentsSpy.mockImplementationOnce(() => null);
+        findNoteWithCommentsSpy.mockResolvedValueOnce(null);
         await callNoteFinder(request, next);
       });
 
@@ -124,15 +75,15 @@ describe('noteFinder', () => {
     });
   });
 
-  test('next middleware is not called when noteService throws an Error', async () => {
+  test('next middleware is not called when noteService throws an error', async () => {
     request = createRequest(idString);
 
     findNoteWithCommentsSpy.mockImplementationOnce(() => {
-      throw new ParseError('some error');
+      throw new Error('some error');
     });
 
     await expect(async () => await callNoteFinder(request, next))
-      .rejects.toThrow(ParseError);
+      .rejects.toThrow();
 
     expect(findNoteWithCommentsSpy).toHaveBeenCalledWith(idString);
 

@@ -62,8 +62,8 @@ describe('POST comments', () => {
         if ('id' in responseBody) {
           const foundComment = await Comment.findByPk(responseBody.id);
 
-          expect(foundComment.noteId).toBe(note.id);
-          expect(foundComment.content).toBe(content);
+          expect(foundComment).toHaveProperty('noteId', note.id);
+          expect(foundComment).toHaveProperty('content', content);
         } else {
           throw new Error('Expected property id');
         }

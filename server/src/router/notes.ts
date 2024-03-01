@@ -22,7 +22,7 @@ const singleRouter = express.Router();
 
 singleRouter.get('/', (async (req, res) => {
   const { note } = req;
-  return res.send(await note.view());
+  return res.send(await note?.view());
 }) as RequestHandler);
 
 const commentsRouter = express.Router();
@@ -34,7 +34,7 @@ commentsRouter.post('/', (async (req, res) => {
 
   const comment = await Comment.create({
     content,
-    noteId: note.id,
+    noteId: note?.id,
   });
 
   return res.status(201).send(comment);

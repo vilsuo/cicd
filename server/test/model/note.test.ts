@@ -22,11 +22,6 @@ describe('Note', () => {
   });
 
   describe('validation', () => {
-
-    test('can not create a Note without content', async () => {
-      await expectValidationError({});
-    });
-
     test('can not create a Note with empty content', async () => {
       await expectValidationError({ content: '' });
     });

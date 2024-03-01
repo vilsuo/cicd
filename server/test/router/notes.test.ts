@@ -147,7 +147,7 @@ describe('POST notes', () => {
     test('posted Note can be found', async () => {
       if ('id' in response.body) {
         const foundNote = await Note.findByPk(response.body.id);
-        expect(foundNote.content).toBe(content);
+        expect(foundNote).toHaveProperty('content', content);
       } else {
         throw new Error('Note id is not returned');
       }
