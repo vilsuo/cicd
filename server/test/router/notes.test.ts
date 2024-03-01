@@ -59,8 +59,8 @@ describe('GET notes', () => {
     const response = await getNotes();
 
     expect(response.body).toHaveLength(1);
-    expect(response.body[0]).toStrictEqual(
-      modelToResponseObject(createdNote.dataValues)
+    expect(response.body).toStrictEqual(
+      [modelToResponseObject(createdNote.dataValues)]
     );
   });
 });

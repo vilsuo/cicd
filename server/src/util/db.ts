@@ -7,7 +7,7 @@ export const sequelize = new Sequelize(POSTGRES_URL, {
   pool: { max: 4 }, // ElephantSQL allows 5 connections
 });
 
-export const connectToDatabases = async () => {
+export const connectToDatabases = async (): Promise<null> => {
   try {
     await sequelize.authenticate();
     logger.info('Connected to the Postgres database');
