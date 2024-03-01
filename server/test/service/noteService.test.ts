@@ -23,7 +23,7 @@ describe('createNote', () => {
   });
 
   test('when content parser does not throw, a note is created with content', async () => {
-    parseTextSpy.mockImplementationOnce((content: string) => content);
+    parseTextSpy.mockImplementationOnce(() => validNoteCreationValues.content);
 
     noteCreateSpy.mockImplementationOnce(() => NOTE);
 
