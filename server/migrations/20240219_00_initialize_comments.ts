@@ -1,6 +1,7 @@
-import { DataTypes, QueryInterface } from 'sequelize';
+import { DataTypes } from 'sequelize';
+import { Migration } from '../src/util/umzug';
 
-export const up = async ({ context: queryInterface }: { context: QueryInterface }) => {
+export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.createTable('comments', {
     id: {
       type: DataTypes.INTEGER,
@@ -27,6 +28,6 @@ export const up = async ({ context: queryInterface }: { context: QueryInterface 
   });
 };
 
-export const down = async ({ context: queryInterface }: { context: QueryInterface }) => {
+export const down: Migration = async ({ context: queryInterface }) => {
   await queryInterface.dropTable('comments');
 };

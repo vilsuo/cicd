@@ -25,6 +25,9 @@ const migrationConf = {
 
 const umzug = new /*My*/Umzug(migrationConf);
 
+// export the type helper exposed by umzug, which will have the `context` argument typed correctly
+export type Migration = typeof umzug._types.migration;
+
 export default umzug;
 
 if (require.main === module) {
