@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes, QueryInterface } from 'sequelize';
 
-const up = async ({ context: queryInterface }) => {
+export const up = async ({ context: queryInterface }: { context: QueryInterface }) => {
   await queryInterface.createTable('comments', {
     id: {
       type: DataTypes.INTEGER,
@@ -27,8 +27,6 @@ const up = async ({ context: queryInterface }) => {
   });
 };
 
-const down = async ({ context: queryInterface }) => {
+export const down = async ({ context: queryInterface }: { context: QueryInterface }) => {
   await queryInterface.dropTable('comments');
 };
-
-module.exports = { up, down };

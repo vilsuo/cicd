@@ -17,7 +17,7 @@ class MyUmzug extends Umzug {
 }
 
 const migrationConf = {
-  migrations: { glob: 'migrations/*.js' },
+  migrations: { glob: 'migrations/*.ts' },
   context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   logger: console,
