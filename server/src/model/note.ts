@@ -32,7 +32,14 @@ class Note extends Model<
   };
   */
 
-  declare view: () => Promise<Note>;
+  //declare view: () => Promise<Note>;
+
+  view = async () => {
+    // In PostgreSQL, `incrementResult` will be the updated user, unless the option
+    // `{ returning: false }` was set (and then it will be undefined).
+    const incrementResult = await this.increment('views');
+    return incrementResult;
+  };
 }
 
 const NOTE_CONTENT_LENGTH_RANGE = [
@@ -81,11 +88,11 @@ Note.init({
   modelName: 'note',
 });
 
+/*
 Note.prototype.view = async function () {
-  // In PostgreSQL, `incrementResult` will be the updated user, unless the option
-  // `{ returning: false }` was set (and then it will be undefined).
-  const incrementResult = await this.increment('views');
+  const incrementResult = await this.increment('views') as Note;
   return incrementResult;
 };
+*/
 
 export default Note;
