@@ -1,23 +1,9 @@
-import { Umzug, SequelizeStorage, UmzugCLI, CommandLineParserOptions } from 'umzug';
+import { Umzug, SequelizeStorage } from 'umzug';
 import { sequelize, connectToDatabases } from '../db';
-
-// to show more of the thrown Errors https://github.com/sequelize/umzug#CLI
-class MyUmzugCLI extends UmzugCLI {
-  async execute() {
-    await super.executeWithoutErrorHandling();
-    return true;
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MyUmzug extends Umzug {
-  getCLI(options: CommandLineParserOptions) {
-    return new MyUmzugCLI(this, options);
-  }
-}
+import { getMigrationsGlob } from '../../config';
 
 const migrationConf = {
-  migrations: { glob: 'migrations/*.ts' },
+  migrations: { glob: getMigrationsGlob(process.env.NODE_ENV) },
   context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   logger: console,
