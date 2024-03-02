@@ -7,7 +7,7 @@ const app = express();
 
 app.use('/api', router);
 
-const DIST = path.join(__dirname, '..', 'build', 'dist');
+const DIST = path.join(__dirname, '..', 'dist');
 
 app.use(express.static(DIST));
 
