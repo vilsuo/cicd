@@ -99,7 +99,7 @@ jobs:
       - name: Run E2E tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run client:start, npm run server:start:test
+          start: npm run client-e2e:start, npm run server-e2e:start
           command: npm run test:e2e
         env:
           POSTGRES_URL_TEST: 'postgres://postgres:postgres@localhost:5432/postgres'

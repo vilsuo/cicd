@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "deploy": "rm -rf ../server/dist && npm run build && cp -r ./dist ../server",
+    "deploy": "rm -rf ../server/build/dist && npm run build && cp -r ./dist ../server/build/dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest"
