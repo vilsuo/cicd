@@ -6,6 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
+    "dev:test": "cross-env NODE_ENV=test ts-node src/index.ts",
     "dev-pg:up": "docker compose -f docker-compose.dev.yml up",
     "dev-pg:down": "docker compose -f docker-compose.dev.yml down",
     "dev-pg:psql": "docker exec -it cicd_pg_dev_db psql --username=postgres --dbname=cicd_dev",
