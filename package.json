@@ -12,6 +12,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "client:deploy": "cd client && npm run deploy",
+    "server:tsc": "cd server && npm run tsc",
     "start": "cd server && npm run start"
   },
   "keywords": [],
