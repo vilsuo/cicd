@@ -1,6 +1,6 @@
 # CI/CD Notes Application
 The application is hosted on [Render](https://render.com/) cloud. 
-The on production, application uses Postgres database hosted on [ElephantSql](https://www.elephantsql.com/).
+The on production, application uses Postgres database hosted on [Neon](https://neon.tech/).
 
 See live at [CICD Notes](https://cicd-notes.onrender.com/)
 
