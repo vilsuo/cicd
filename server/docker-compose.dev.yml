@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   pg_dev_db:
     image: postgres
@@ -36,4 +34,4 @@ services:
       - ./pg_database:/var/lib/postgresql/data
 
       # scripts are only run if you start the container with a data directory that is empty
-      - ./init-pg-dev.sql:/docker-entrypoint-initdb.d/init-pg-dev.sql
+      #- ./init-pg-dev.sql:/docker-entrypoint-initdb.d/init-pg-dev.sql
